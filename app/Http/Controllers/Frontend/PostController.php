@@ -8,39 +8,40 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Image;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'content' => 'required',
             'image_path' => 'required|image|mimes:png,jpg,jpeg,webp',
         ]);
 
-        $post_photo_name = "Post-Photo".Str::random(10).".". $request->file('image_path')->getClientOriginalExtension();
-        $upload_link = base_path("public/uploads/post_photo/").$post_photo_name;
-        Image::make($request->file('image_path'))->resize(120, 120)->save($upload_link);
+        if($validator->fails()){
+            return response()->json([
+                'status' => 400,
+                'error'=> $validator->errors()->toArray()
+            ]);
+        }else{
+            $post_photo_name = "Post-Photo".Str::random(10).".". $request->file('image_path')->getClientOriginalExtension();
+            $upload_link = base_path("public/uploads/post_photo/").$post_photo_name;
+            Image::make($request->file('image_path'))->resize(120, 120)->save($upload_link);
 
-        Post::create([
-            'user_id' => Auth::user()->id,
-            'content' => $request->content,
-            'image_path' => $post_photo_name,
-            'created_at' =>Carbon::now(),
-        ]);
+            Post::insert([
+                'user_id' => Auth::user()->id,
+                'content' => $request->content,
+                'image_path' => $post_photo_name,
+                'created_at' =>Carbon::now(),
+            ]);
 
-        $notification = array(
-            'message' => 'Post create successfully.',
-            'alert-type' => 'success'
-        );
-
-        return back()->with($notification);
-    }
-
-    public function show(string $id)
-    {
-        //
+            return response()->json([
+                'status' => 200,
+                'message'=> "Post create successfully."
+            ]);
+        };
     }
 
     public function edit(string $id)
@@ -55,6 +56,8 @@ class PostController extends Controller
 
     public function destroy(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        unlink(base_path("public/uploads/post_photo/").$post->image_path);
+        $post->delete();
     }
 }
