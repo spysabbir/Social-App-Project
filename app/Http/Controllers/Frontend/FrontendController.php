@@ -11,11 +11,4 @@ class FrontendController extends Controller
     {
         return view('frontend.index');
     }
-
-    public function profile(Request $request)
-    {
-        return view('frontend.profile.index', [
-            'user' => $request->user(),
-        ]);
-    }
 }

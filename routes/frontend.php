@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Frontend\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Frontend\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Frontend\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Frontend\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Frontend\Auth\NewPasswordController;
@@ -10,6 +9,7 @@ use App\Http\Controllers\Frontend\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Frontend\Auth\RegisteredUserController;
 use App\Http\Controllers\Frontend\Auth\VerifyEmailController;
 use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\Frontend\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,8 +39,8 @@ Route::middleware(['auth', 'role:User'])->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
     Route::get('/', [FrontendController::class, 'index'])->name('index');
-    Route::get('/profile', [FrontendController::class, 'profile'])->name('profile');
 
+    Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
