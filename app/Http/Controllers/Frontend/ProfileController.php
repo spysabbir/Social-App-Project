@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Image;
+use Intervention\Image\Facades\Image;
 
 class ProfileController extends Controller
 {
@@ -23,7 +21,7 @@ class ProfileController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|max:255|unique:users,email,'.Auth::user()->id,
+            'username' => 'nullable|string|max:255',
             'phone_number' => 'nullable|min:11|max:14',
             'profile_photo' => 'nullable|image|mimes:png,jpg,jpeg,webp',
         ]);
@@ -52,9 +50,9 @@ class ProfileController extends Controller
 
     }
 
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request)
     {
-        $request->validateWithBag('userDeletion', [
+        $request->validate([
             'password' => ['required', 'current_password'],
         ]);
 
@@ -67,6 +65,6 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/login');
+        return Redirect::to('/login')->with('info', 'Profile Delete successfully.');
     }
 }

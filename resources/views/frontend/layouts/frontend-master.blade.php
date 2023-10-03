@@ -52,49 +52,46 @@
                     <div class="p-2 bg-light offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample">
                         <div class="sidebar-nav mb-3">
                             <div class="pb-4">
-                                <a href="index-2.html" class="text-decoration-none">
+                                <a href="{{ route('index') }}" class="text-decoration-none">
                                     <img src="{{ asset('frontend') }}/img/logo.png" class="img-fluid logo" alt="brand-logo">
                                 </a>
                             </div>
                             <ul class="navbar-nav justify-content-end flex-grow-1">
                                 <li class="nav-item">
-                                    <a href="{{ route('ignition.updateConfig') }}" class="nav-link active"><span class="material-icons me-3">house</span> <span>Feed</span></a>
+                                    <a href="{{ route('index') }}" class="nav-link active"><span class="material-icons me-3">house</span> <span>Feed</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="profile.html" class="nav-link"><span class="material-icons me-3">account_circle</span> <span>Profile</span></a>
+                                    <a href="{{ route('profile') }}" class="nav-link"><span class="material-icons me-3">account_circle</span> <span>Profile</span></a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="explore.html" class="nav-link"><span class="material-icons me-3">explore</span> <span>Explore</span></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="index-2.html" class="nav-link"><span class="material-icons me-3">logout</span> <span>Logout</span></a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="tags.html" class="nav-link"><span class="material-icons me-3">local_fire_department</span> <span>Trending</span></a>
                                 </li>
                             </ul>
                         </div>
-                        <a href="#" class="btn btn-primary w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Out</a>
+                        <a href="#" class="btn btn-danger w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0" onclick="event.preventDefault();  document.getElementById('logout_btn').submit();">Log Out</a>
+                        <form id="logout_btn" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                     </div>
                     <div class="ps-0 m-none fix-sidebar">
                         <div class="sidebar-nav mb-3">
                             <div class="pb-4 mb-4">
-                                <a href="index-2.html" class="text-decoration-none">
+                                <a href="{{ route('index') }}" class="text-decoration-none">
                                     <img src="{{ asset('frontend') }}/img/logo.png" class="img-fluid logo" alt="brand-logo">
                                 </a>
                             </div>
                             <ul class="navbar-nav justify-content-end flex-grow-1">
                                 <li class="nav-item">
-                                    <a href="index-2.html" class="nav-link active"><span class="material-icons me-3">house</span> <span>Feed</span></a>
+                                    <a href="{{ route('index') }}" class="nav-link active"><span class="material-icons me-3">house</span> <span>Feed</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="profile.html" class="nav-link"><span class="material-icons me-3">account_circle</span> <span>Profile</span></a>
+                                    <a href="{{ route('profile') }}" class="nav-link"><span class="material-icons me-3">account_circle</span> <span>Profile</span></a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="explore.html" class="nav-link"><span class="material-icons me-3">explore</span> <span>Explore</span></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="index-2.html" class="nav-link"><span class="material-icons me-3">logout</span> <span>Logout</span></a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="tags.html" class="nav-link"><span class="material-icons me-3">local_fire_department</span> <span>Trending</span></a>
