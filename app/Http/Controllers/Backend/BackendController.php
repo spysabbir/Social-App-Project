@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
+use App\Models\Like;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -11,7 +14,11 @@ class BackendController extends Controller
 {
     public function dashboard()
     {
-        return view('backend.dashboard');
+        $allUser = User::where('role', 'User')->count();
+        $allPost = Post::count();
+        $allComment = Comment::count();
+        $allLike = Like::count();
+        return view('backend.dashboard', compact('allUser', 'allPost', 'allComment', 'allLike'));
     }
 
     public function profile(Request $request)
