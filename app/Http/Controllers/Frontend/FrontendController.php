@@ -15,7 +15,8 @@ class FrontendController extends Controller
     public function index()
     {
         $allPost = Post::all();
-        $allUser = User::where('role', 'User')->latest()->get();
+        $followerIds = Follower::where('following_id', auth()->user()->id)->pluck('follower_id');
+        $allUser = User::where('role', 'User')->where('id', '!=', auth()->user()->id)->whereNotIn('id', $followerIds)->inRandomOrder()->get();
         return view('frontend.index', compact('allUser', 'allPost'));
     }
 

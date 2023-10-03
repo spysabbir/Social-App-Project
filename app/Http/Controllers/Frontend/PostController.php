@@ -26,7 +26,7 @@ class PostController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            $post_photo_name = "Post-Photo".Str::random(10).".". $request->file('image_path')->getClientOriginalExtension();
+            $post_photo_name = "Post-Photo-".Str::random(10).".". $request->file('image_path')->getClientOriginalExtension();
             $upload_link = base_path("public/uploads/post_photo/").$post_photo_name;
             Image::make($request->file('image_path'))->resize(120, 120)->save($upload_link);
 

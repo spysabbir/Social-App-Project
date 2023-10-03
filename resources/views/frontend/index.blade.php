@@ -32,7 +32,7 @@
 
                     <!-- Follow People Start -->
                     <div class="account-slider">
-                        @forelse ($allUser as $user)
+                        @forelse ($allUser->take(10) as $user)
                         <div class="account-item">
                             <div class="me-2 bg-white shadow-sm rounded-4 p-3 user-list-item d-flex justify-content-center my-2">
                                 <div class="text-center">
@@ -53,7 +53,9 @@
                             </div>
                         </div>
                         @empty
-
+                        <div class="alert alert-primary">
+                            <strong>User Not Found</strong>
+                        </div>
                         @endforelse
                     </div>
                     <!-- Follow People End -->
@@ -63,17 +65,17 @@
                         @forelse ($allPost as $post)
                         <div class="bg-white p-3 feed-item rounded-4 mb-3 shadow-sm">
                             <div class="d-flex">
-                                <img src="{{ asset('uploads/profile_photo') }}/{{ $post->user_id }}" class="img-fluid rounded-circle user-img" alt="profile-img">
+                                <img src="{{ asset('uploads/profile_photo') }}/{{ $post->user->profile_photo }}" class="img-fluid rounded-circle user-img" alt="profile-img">
                                 <div class="d-flex ms-3 align-items-start w-100">
                                     <div class="w-100">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <a href="profile.html" class="text-decoration-none d-flex align-items-center">
-                                            <h6 class="fw-bold mb-0 text-body">{{ $post->user_id }}</h6>
+                                            <h6 class="fw-bold mb-0 text-body">{{ $post->user->name }}</h6>
                                             <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span>
-                                            <small class="text-muted ms-2">{{ $post->user_id }}</small>
+                                            <small class="text-muted ms-2">{{ $post->user->username }}</small>
                                         </a>
                                         <div class="d-flex align-items-center small">
-                                            <p class="text-muted mb-0">{{ $post->created_at }}</p>
+                                            <p class="text-muted mb-0">{{ $post->created_at->format('D d-M,Y h:i:s A') }}</p>
                                             <div class="dropdown">
                                                 <a href="#" class="text-muted text-decoration-none material-icons ms-2 md-20 rounded-circle bg-light p-1" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">more_vert</a>
                                                 <ul class="dropdown-menu fs-13 dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
@@ -98,7 +100,7 @@
                                         </div>
                                         <div class="d-flex align-items-center mb-3" data-bs-toggle="modal" data-bs-target="#commentModal">
                                             <span class="material-icons bg-white border-0 text-primary pe-2 md-36">account_circle</span>
-                                            <input type="text" class="form-control form-control-sm rounded-3 fw-light" placeholder="Write Your comment">
+                                            <input type="text" class="form-control form-control-sm rounded-3 fw-light" placeholder="Write Your comment" readonly>
                                         </div>
                                         <div class="comments">
                                             <div class="d-flex mb-2">
@@ -118,46 +120,6 @@
                                                     <a href="#" class="small text-muted text-decoration-none">Reply</a>
                                                     <span class="fs-3 text-muted material-icons mx-1">circle</span>
                                                     <span class="small text-muted">1h</span>
-                                                </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex mb-2">
-                                                <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                                <img src="{{ asset('frontend') }}/img/rmate3.jpg" class="img-fluid rounded-circle" alt="commenters-img">
-                                                </a>
-                                                <div class="ms-2 small">
-                                                <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                                    <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
-                                                        <p class="fw-500 mb-0">John Smith</p>
-                                                        <span class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</span>
-                                                    </div>
-                                                </a>
-                                                <div class="d-flex align-items-center ms-2">
-                                                    <a href="#" class="small text-muted text-decoration-none">Like</a>
-                                                    <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                                    <a href="#" class="small text-muted text-decoration-none">Reply</a>
-                                                    <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                                    <span class="small text-muted">20min</span>
-                                                </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex mb-2">
-                                                <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                                <img src="{{ asset('frontend') }}/img/rmate2.jpg" class="img-fluid rounded-circle" alt="commenters-img">
-                                                </a>
-                                                <div class="ms-2 small">
-                                                <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                                    <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
-                                                        <p class="fw-500 mb-0">Shay Jordon</p>
-                                                        <span class="text-muted">With our vastly improved notifications system, users have more control.</span>
-                                                    </div>
-                                                </a>
-                                                <div class="d-flex align-items-center ms-2">
-                                                    <a href="#" class="small text-muted text-decoration-none">Like</a>
-                                                    <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                                    <a href="#" class="small text-muted text-decoration-none">Reply</a>
-                                                    <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                                    <span class="small text-muted">10min</span>
                                                 </div>
                                                 </div>
                                             </div>
@@ -183,171 +145,26 @@
             <div class="tab-pane fade" id="pills-people" role="tabpanel" aria-labelledby="pills-people-tab">
                 <h6 class="mb-3 fw-bold text-body">People you can follow</h6>
                 <div class="bg-white rounded-4 overflow-hidden mb-4 shadow-sm">
+                    @forelse ($allUser as $user)
                     <a href="profile.html" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
-                    <img src="{{ asset('frontend') }}/img/rmate5.jpg" class="img-fluid rounded-circle me-3" alt="profile-img">
-                    <div>
-                        <p class="fw-bold mb-0 pe-3 d-flex align-items-center">Webartinfo <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
-                        <div class="text-muted fw-light">
-                            <p class="mb-1 small">@abcdsec</p>
-                            <span class="text-muted d-flex align-items-center small"><span class="material-icons me-1 small">open_in_new</span>Promoted</span>
-                        </div>
-                    </div>
-                    <div class="ms-auto">
-                        <span class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
-                    </div>
-                    </a>
-                    <a href="profile.html" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
-                    <img src="{{ asset('frontend') }}/img/rmate4.jpg" class="img-fluid rounded-circle me-3" alt="profile-img">
-                    <div>
-                        <p class="fw-bold mb-0 pe-3 d-flex align-items-center">John Smith <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
+                        <img src="{{ asset('uploads/profile_photo') }}/{{ $user->profile_photo }}" class="img-fluid rounded-circle me-3" alt="profile-img">
                         <div>
-                            <p class="fw-light text-muted mb-1 small">@johnsmith</p>
-                            <span class="d-flex align-items-center small">Designer</span>
+                            <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{ $user->name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
+                            <div class="text-muted fw-light">
+                                <p class="mb-1 small">{{ $user->username }}</p>
+                                <span class="text-muted d-flex align-items-center small"><span class="material-icons me-1 small">open_in_new</span>Promoted</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="ms-auto">
-                        <span class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
-                    </div>
-                    </a>
-                    <a href="profile.html" class="p-3 d-flex text-dark text-decoration-none account-item pf-item">
-                    <img src="{{ asset('frontend') }}/img/rmate3.jpg" class="img-fluid rounded-circle me-3" alt="profile-img">
-                    <div>
-                        <p class="fw-bold mb-0 pe-3 d-flex align-items-center">Konex <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
-                        <div>
-                            <p class="text-muted fw-light mb-1 small">@Konex</p>
-                            <span class="d-flex align-items-center small">Artist/Author/Motivational Speaker</span>
+                        <div class="ms-auto">
+                            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                                <input type="checkbox" class="btn-check followerStatusBtn" id="btncheck1" data-id="{{ $user->id }}" {{ App\Models\Follower::where('follower_id', $user->id)->where('following_id', Auth::user()->id)->first() ? 'checked' : '' }}>
+                                <label class="btn btn-outline-primary btn-sm px-3 rounded-pill" for="btncheck1"><span class="follow">Follow</span><span class="following d-none">Following</span></label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="ms-auto">
-                        <span class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
-                    </div>
                     </a>
-                </div>
-                <h6 class="mb-3 fw-bold text-body">Popular</h6>
-                <div class="bg-white rounded-4 overflow-hidden mb-4 shadow-sm">
-                    <a href="profile.html" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
-                    <img src="{{ asset('frontend') }}/img/rmate2.jpg" class="img-fluid rounded-circle me-3" alt="profile-img">
-                    <div>
-                        <p class="fw-bold mb-0 pe-3 d-flex align-items-center">Anushuka Shetty <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
-                        <div class="text-muted fw-light">
-                            <p class="mb-1 small">@anushuka</p>
-                            <span class="text-muted d-flex align-items-center small"><span class="material-icons me-1 small">open_in_new</span>Promoted</span>
-                        </div>
-                    </div>
-                    <div class="ms-auto">
-                        <span class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
-                    </div>
-                    </a>
-                    <a href="profile.html" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
-                    <img src="{{ asset('frontend') }}/img/rmate4.jpg" class="img-fluid rounded-circle me-3" alt="profile-img">
-                    <div>
-                        <p class="fw-bold mb-0 pe-3 d-flex align-items-center">John Smith <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
-                        <div>
-                            <p class="fw-light text-muted mb-1 small">@johnsmith</p>
-                            <span class="d-flex align-items-center small">Actress</span>
-                        </div>
-                    </div>
-                    <div class="ms-auto">
-                        <span class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
-                    </div>
-                    </a>
-                    <a href="profile.html" class="p-3 d-flex text-dark text-decoration-none account-item pf-item">
-                    <img src="{{ asset('frontend') }}/img/rmate6.jpg" class="img-fluid rounded-circle me-3" alt="profile-img">
-                    <div>
-                        <p class="fw-bold mb-0 pe-3 d-flex align-items-center">William Smith <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
-                        <div>
-                            <p class="text-muted fw-light mb-1 small">@williamsmith</p>
-                            <span class="d-flex align-items-center small">Motivational Speaker</span>
-                        </div>
-                    </div>
-                    <div class="ms-auto">
-                        <span class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
-                    </div>
-                    </a>
-                </div>
-                <h6 class="mb-3 fw-bold text-body">News Papers & Channels</h6>
-                <div class="bg-white rounded-4 overflow-hidden mb-4 shadow-sm">
-                    <a href="profile.html" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
-                    <img src="{{ asset('frontend') }}/img/rmate5.jpg" class="img-fluid rounded-circle me-3" alt="profile-img">
-                    <div>
-                        <p class="fw-bold mb-0 pe-3 d-flex align-items-center">Webartinfo <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
-                        <div class="text-muted fw-light">
-                            <p class="mb-1 small">@abcdsec</p>
-                            <span class="text-muted d-flex align-items-center small"><span class="material-icons me-1 small">open_in_new</span>Promoted</span>
-                        </div>
-                    </div>
-                    <div class="ms-auto">
-                        <span class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
-                    </div>
-                    </a>
-                    <a href="profile.html" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
-                    <img src="{{ asset('frontend') }}/img/rmate4.jpg" class="img-fluid rounded-circle me-3" alt="profile-img">
-                    <div>
-                        <p class="fw-bold mb-0 pe-3 d-flex align-items-center">John Smith <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
-                        <div>
-                            <p class="fw-light text-muted mb-1 small">@johnsmith</p>
-                            <span class="d-flex align-items-center small">Designer</span>
-                        </div>
-                    </div>
-                    <div class="ms-auto">
-                        <span class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
-                    </div>
-                    </a>
-                    <a href="profile.html" class="p-3 d-flex text-dark text-decoration-none account-item pf-item">
-                    <img src="{{ asset('frontend') }}/img/rmate3.jpg" class="img-fluid rounded-circle me-3" alt="profile-img">
-                    <div>
-                        <p class="fw-bold mb-0 pe-3 d-flex align-items-center">Konex <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
-                        <div>
-                            <p class="text-muted fw-light mb-1 small">@Konex</p>
-                            <span class="d-flex align-items-center small">Artist/Author/Motivational Speaker</span>
-                        </div>
-                    </div>
-                    <div class="ms-auto">
-                        <span class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
-                    </div>
-                    </a>
-                </div>
-                <h6 class="mb-3 fw-bold text-body">Politicians</h6>
-                <div class="bg-white rounded-4 overflow-hidden mb-4 shadow-sm">
-                    <a href="profile.html" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
-                    <img src="{{ asset('frontend') }}/img/rmate2.jpg" class="img-fluid rounded-circle me-3" alt="profile-img">
-                    <div>
-                        <p class="fw-bold mb-0 pe-3 d-flex align-items-center">Anushuka Shetty <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
-                        <div class="text-muted fw-light">
-                            <p class="mb-1 small">@anushuka</p>
-                            <span class="text-muted d-flex align-items-center small"><span class="material-icons me-1 small">open_in_new</span>Promoted</span>
-                        </div>
-                    </div>
-                    <div class="ms-auto">
-                        <span class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
-                    </div>
-                    </a>
-                    <a href="profile.html" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
-                    <img src="{{ asset('frontend') }}/img/rmate4.jpg" class="img-fluid rounded-circle me-3" alt="profile-img">
-                    <div>
-                        <p class="fw-bold mb-0 pe-3 d-flex align-items-center">John Smith <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
-                        <div>
-                            <p class="fw-light text-muted mb-1 small">@johnsmith</p>
-                            <span class="d-flex align-items-center small">Actress</span>
-                        </div>
-                    </div>
-                    <div class="ms-auto">
-                        <span class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
-                    </div>
-                    </a>
-                    <a href="profile.html" class="p-3 d-flex text-dark text-decoration-none account-item pf-item">
-                    <img src="{{ asset('frontend') }}/img/rmate6.jpg" class="img-fluid rounded-circle me-3" alt="profile-img">
-                    <div>
-                        <p class="fw-bold mb-0 pe-3 d-flex align-items-center">William Smith <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
-                        <div>
-                            <p class="text-muted fw-light mb-1 small">@williamsmith</p>
-                            <span class="d-flex align-items-center small">Motivational Speaker</span>
-                        </div>
-                    </div>
-                    <div class="ms-auto">
-                        <span class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
-                    </div>
-                    </a>
+                    @empty
+
+                    @endforelse
                 </div>
             </div>
             <!-- People End -->
