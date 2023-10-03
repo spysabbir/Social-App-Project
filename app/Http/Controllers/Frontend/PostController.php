@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Post;
 use Carbon\Carbon;
@@ -113,5 +114,32 @@ class PostController extends Controller
             'likeStatus' => $likeStatus,
             'likeCount' => $likeCount,
         ]);
+    }
+
+    public function postComment(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'content' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 400,
+                'error'=> $validator->errors()->toArray()
+            ]);
+        }else{
+            Comment::create([
+                'user_id' => Auth::user()->id,
+                'post_id' => $id,
+                'content' => $request->content,
+                'created_at' =>Carbon::now(),
+            ]);
+
+            $commentCount = Comment::where('post_id', $id)->count();
+
+            return response()->json([
+                'commentCount' => $commentCount,
+            ]);
+        }
     }
 }

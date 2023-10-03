@@ -15,9 +15,10 @@ class FrontendController extends Controller
     public function index()
     {
         $allPost = Post::all();
+        $trendingPost = Post::all();
         $followerIds = Follower::where('following_id', auth()->user()->id)->pluck('follower_id');
         $allUser = User::where('role', 'User')->where('id', '!=', auth()->user()->id)->whereNotIn('id', $followerIds)->inRandomOrder()->get();
-        return view('frontend.index', compact('allUser', 'allPost'));
+        return view('frontend.index', compact('allUser', 'allPost', 'trendingPost'));
     }
 
     public function followerStatus($id)
@@ -36,5 +37,16 @@ class FrontendController extends Controller
         return response()->json([
             'followerStatus' => $followerStatus,
         ]);
+    }
+
+    public function timeline ($id)
+    {
+        $user = User::findOrFail($id);
+        $follower_count = Follower::where('follower_id', $id)->count();
+        $following_count = Follower::where('following_id', $id)->count();
+
+        $allPost = Post::where('user_id', $id)->get();
+
+        return view('frontend.profile.timeline', compact('user', 'follower_count', 'following_count', 'allPost'));
     }
 }

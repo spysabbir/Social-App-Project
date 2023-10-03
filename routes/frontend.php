@@ -42,6 +42,8 @@ Route::middleware(['auth', 'role:User'])->group(function () {
 
         Route::get('/follower/status/{id}', [FrontendController::class, 'followerStatus'])->name('follower.status');
 
+        Route::get('/timeline/{username}', [FrontendController::class, 'timeline'])->name('timeline');
+
         Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -49,6 +51,8 @@ Route::middleware(['auth', 'role:User'])->group(function () {
 
         Route::resource('post', PostController::class);
         Route::get('/post/like/{id}', [PostController::class, 'postLike'])->name('post.like');
+
+        Route::post('post/comment/{id}', [PostController::class, 'postComment'])->name('post.comment');
 
     });
 });

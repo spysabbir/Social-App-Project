@@ -65,79 +65,7 @@
                     <!-- Post Start -->
                     <div class="pt-4 feeds">
                         @forelse ($allPost as $post)
-                        <div class="bg-white p-3 feed-item rounded-4 mb-3 shadow-sm">
-                            <div class="d-flex">
-                                <img src="{{ asset('uploads/profile_photo') }}/{{ $post->user->profile_photo }}" class="img-fluid rounded-circle user-img" alt="profile-img">
-                                <div class="d-flex ms-3 align-items-start w-100">
-                                    <div class="w-100">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <a href="profile.html" class="text-decoration-none d-flex align-items-center">
-                                            <h6 class="fw-bold mb-0 text-body">{{ $post->user->name }}</h6>
-                                            <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span>
-                                            <small class="text-muted ms-2">{{ $post->user->username }}</small>
-                                        </a>
-                                        <div class="d-flex align-items-center small">
-                                            <p class="text-muted mb-0">{{ $post->created_at->format('D d-M,Y h:i:s A') }}</p>
-                                            <div class="dropdown">
-                                                <a href="#" class="text-muted text-decoration-none material-icons ms-2 md-20 rounded-circle bg-light p-1" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">more_vert</a>
-                                                <ul class="dropdown-menu fs-13 dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                                                    <li data-id="{{ $post->id }}" class="editBtn"><a class="dropdown-item text-muted" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#editPostModal"><span class="material-icons md-13 me-1">edit</span>Edit</a></li>
-                                                    <li data-id="{{ $post->id }}" class="deleteBtn"><a class="dropdown-item text-muted" href="javascript:void(0)"><span class="material-icons md-13 me-1">delete</span>Delete</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="my-2">
-                                        <p class="text-dark">{{ $post->content }}</p>
-                                        <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                            <img src="{{ asset('uploads/post_photo') }}/{{ $post->image_path }}" class="img-fluid rounded mb-3" alt="post-img">
-                                        </a>
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <div class="postLikeBox">
-                                                <a data-id="{{ $post->id }}" href="javascript:void(0)" class="text-info text-decoration-none d-flex align-items-start fw-light postLikeBtn">
-                                                    <span class="material-icons md-20 me-2 likeStatus">
-                                                        {{ App\Models\Like::where('post_id', $post->id)->where('user_id', Auth::user()->id)->first() ? 'thumb_up_off_alt' : 'thumb_down_off_alt' }}
-                                                    </span>
-                                                    <span class="likeCount">
-                                                        {{ App\Models\Like::where('post_id', $post->id)->count() }}
-                                                    </span>
-                                                </a>
-                                            </div>
-                                            <div>
-                                                <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-20 me-2">chat_bubble_outline</span><span>4.0k</span></a>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center mb-3" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                            <span class="material-icons bg-white border-0 text-primary pe-2 md-36">account_circle</span>
-                                            <input type="text" class="form-control form-control-sm rounded-3 fw-light" placeholder="Write Your comment" readonly>
-                                        </div>
-                                        <div class="comments">
-                                            <div class="d-flex mb-2">
-                                                <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                                <img src="{{ asset('frontend') }}/img/rmate1.jpg" class="img-fluid rounded-circle" alt="commenters-img">
-                                                </a>
-                                                <div class="ms-2 small">
-                                                <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                                    <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
-                                                        <p class="fw-500 mb-0">Macie Bellis</p>
-                                                        <span class="text-muted">Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolor.</span>
-                                                    </div>
-                                                </a>
-                                                <div class="d-flex align-items-center ms-2">
-                                                    <a href="#" class="small text-muted text-decoration-none">Like</a>
-                                                    <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                                    <a href="#" class="small text-muted text-decoration-none">Reply</a>
-                                                    <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                                    <span class="small text-muted">1h</span>
-                                                </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            @include('frontend.layouts.post')
                         @empty
                         <div class="alert alert-info">
                             <strong>Post Not Found</strong>
@@ -155,7 +83,7 @@
                 <h6 class="mb-3 fw-bold text-body">People you can follow</h6>
                 <div class="bg-white rounded-4 overflow-hidden mb-4 shadow-sm">
                     @forelse ($allUser as $user)
-                    <a href="profile.html" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
+                    <a href="{{ route('timeline', $user->id) }}" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
                         <img src="{{ asset('uploads/profile_photo') }}/{{ $user->profile_photo }}" class="img-fluid rounded-circle me-3" alt="profile-img">
                         <div>
                             <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{ $user->name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
@@ -188,80 +116,8 @@
                     <a href="#" class="text-decoration-none input-group-text bg-white border-0 material-icons text-primary">add_circle</a>
                 </div>
                 <div class="feeds">
-                    @forelse ($allPost as $post)
-                    <div class="bg-white p-3 feed-item rounded-4 mb-3 shadow-sm">
-                        <div class="d-flex">
-                            <img src="{{ asset('uploads/profile_photo') }}/{{ $post->user->profile_photo }}" class="img-fluid rounded-circle user-img" alt="profile-img">
-                            <div class="d-flex ms-3 align-items-start w-100">
-                                <div class="w-100">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <a href="profile.html" class="text-decoration-none d-flex align-items-center">
-                                        <h6 class="fw-bold mb-0 text-body">{{ $post->user->name }}</h6>
-                                        <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span>
-                                        <small class="text-muted ms-2">{{ $post->user->username }}</small>
-                                    </a>
-                                    <div class="d-flex align-items-center small">
-                                        <p class="text-muted mb-0">{{ $post->created_at->format('D d-M,Y h:i:s A') }}</p>
-                                        <div class="dropdown">
-                                            <a href="#" class="text-muted text-decoration-none material-icons ms-2 md-20 rounded-circle bg-light p-1" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">more_vert</a>
-                                            <ul class="dropdown-menu fs-13 dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                                                <li data-id="{{ $post->id }}" class="editBtn"><a class="dropdown-item text-muted" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#editPostModal"><span class="material-icons md-13 me-1">edit</span>Edit</a></li>
-                                                <li data-id="{{ $post->id }}" class="deleteBtn"><a class="dropdown-item text-muted" href="javascript:void(0)"><span class="material-icons md-13 me-1">delete</span>Delete</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="my-2">
-                                    <p class="text-dark">{{ $post->content }}</p>
-                                    <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                        <img src="{{ asset('uploads/post_photo') }}/{{ $post->image_path }}" class="img-fluid rounded mb-3" alt="post-img">
-                                    </a>
-                                    <div class="d-flex align-items-center justify-content-between mb-2">
-                                        <div class="postLikeBox">
-                                            <a data-id="{{ $post->id }}" href="javascript:void(0)" class="text-info text-decoration-none d-flex align-items-start fw-light postLikeBtn">
-                                                <span class="material-icons md-20 me-2 likeStatus">
-                                                    {{ App\Models\Like::where('post_id', $post->id)->where('user_id', Auth::user()->id)->first() ? 'thumb_up_off_alt' : 'thumb_down_off_alt' }}
-                                                </span>
-                                                <span class="likeCount">
-                                                    {{ App\Models\Like::where('post_id', $post->id)->count() }}
-                                                </span>
-                                            </a>
-                                        </div>
-                                        <div>
-                                            <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-20 me-2">chat_bubble_outline</span><span>4.0k</span></a>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center mb-3" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                        <span class="material-icons bg-white border-0 text-primary pe-2 md-36">account_circle</span>
-                                        <input type="text" class="form-control form-control-sm rounded-3 fw-light" placeholder="Write Your comment" readonly>
-                                    </div>
-                                    <div class="comments">
-                                        <div class="d-flex mb-2">
-                                            <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                            <img src="{{ asset('frontend') }}/img/rmate1.jpg" class="img-fluid rounded-circle" alt="commenters-img">
-                                            </a>
-                                            <div class="ms-2 small">
-                                            <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                                <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
-                                                    <p class="fw-500 mb-0">Macie Bellis</p>
-                                                    <span class="text-muted">Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolor.</span>
-                                                </div>
-                                            </a>
-                                            <div class="d-flex align-items-center ms-2">
-                                                <a href="#" class="small text-muted text-decoration-none">Like</a>
-                                                <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                                <a href="#" class="small text-muted text-decoration-none">Reply</a>
-                                                <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                                <span class="small text-muted">1h</span>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @forelse ($trendingPost as $post)
+                        @include('frontend.layouts.post')
                     @empty
                     <div class="alert alert-info">
                         <strong>Post Not Found</strong>
@@ -334,7 +190,7 @@
             });
         });
 
-        // POst Like
+        // Post Like
         $(document).on('click', '.postLikeBtn', function () {
             var id = $(this).data('id');
             var url = "{{ route('post.like', ":id") }}";
@@ -344,13 +200,43 @@
                 type: "GET",
                 success: function (response) {
                     // if (response.likeStatus) {
-                    //     $(this).closest(".postLikeBox").find(".likeStatus").text('thumb_down_off_alt');
+                    //     $(this).find(".likeStatus").text('thumb_down_off_alt');
                     // } else {
-                    //     $(this).closest(".postLikeBox").find(".likeStatus").text('thumb_up_off_alt');
+                    //     $(this).find(".likeStatus").text('thumb_up_off_alt');
                     // }
                 },
             });
         });
-    })
+
+        // Post Comment
+        $('.postCommentForm').on('submit', function (e) {
+            e.preventDefault();
+            var id = $(this).find(".comment_post_id").val();
+            var url = "{{ route('post.comment', ":id") }}";
+            url = url.replace(':id', id)
+            const formData = new FormData(this);
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                beforeSend:function(){
+                    $(document).find('span.error-text').text('');
+                },
+                success: function (response) {
+                    if(response.status == 400){
+                        $.each(response.error, function(prefix, val){
+                            $('span.'+prefix+'_error').text(val[0]);
+                        })
+                    }else{
+                        $(this).find('.comment_content').val('');
+                    }
+                },
+            });
+        });
+})
 </script>
 @endsection
