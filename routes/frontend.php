@@ -35,17 +35,18 @@ Route::middleware(['auth', 'role:User'])->group(function () {
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)->name('verification.verify')->middleware(['signed', 'throttle:6,1']);
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])->name('verification.send')->middleware('throttle:6,1');
 
-    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
-
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
-    Route::get('/', [FrontendController::class, 'index'])->name('index');
+    Route::middleware(['verified'])->group(function () {
+        Route::get('/', [FrontendController::class, 'index'])->name('index');
 
-    Route::get('/follower/status/{id}', [FrontendController::class, 'followerStatus'])->name('follower.status');
+        Route::get('/follower/status/{id}', [FrontendController::class, 'followerStatus'])->name('follower.status');
 
-    Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
-    Route::resource('post', PostController::class);
+        Route::resource('post', PostController::class);
+    });
 });

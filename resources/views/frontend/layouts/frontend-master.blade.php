@@ -101,7 +101,10 @@
                                 </li>
                             </ul>
                         </div>
-                        <a href="#" class="btn btn-primary w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0" data-bs-toggle="modal" data-bs-target="#logoutModal">Log Out</a>
+                        <a href="#" class="btn btn-danger w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0" onclick="event.preventDefault();  document.getElementById('logout_btn').submit();">Log Out</a>
+                        <form id="logout_btn" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                     </div>
                 </aside>
                 <!-- Sidebar Left End -->
@@ -316,7 +319,7 @@
                 <div class="modal-body p-0">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <a href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
                             Log Out
                         </a>
                     </form>

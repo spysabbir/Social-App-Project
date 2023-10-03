@@ -1,25 +1,36 @@
-    <div class="">
-        Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.
-    </div>
+@extends('frontend.layouts.auth-master')
 
-    @if (session('status') == 'verification-link-sent')
-        <div class=""></div>
-            A new verification link has been sent to the email address you provided during registration.
-        </div>
-    @endif
+@section('title', 'Verify Email')
 
-    <div class="">
-        <form method="POST" action="{{ route('verification.send') }}">
-            @csrf
-
-            <div>
-                <button type="submit">Resend Verification Email</button>
+@section('content')
+<div class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
+    <div class="main-content mb-5">
+        <div class="card m-5">
+            <div class="card-header p-3 bg-success text-center text-white">
+                <div class="test-info">
+                    Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.
+                </div>
             </div>
-        </form>
+            <div class="card-body">
+                @if (session('status') == 'verification-link-sent')
+                    <div class="text-info">
+                        A new verification link has been sent to the email address you provided during registration.
+                    </div>
+                @endif
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
+                <form method="POST" action="{{ route('verification.send') }}">
+                    @csrf
 
-            <button type="submit">Log Out</button>
-        </form>
+                    <button type="submit" class="btn btn-success">Resend Verification Email</button>
+                </form>
+
+                <form method="POST" action="{{ route('logout') }}" class="mt-3">
+                    @csrf
+
+                    <button type="submit" class="btn btn-danger">Log Out</button>
+                </form>
+            </div>
+        </div>
     </div>
+</div>
+@endsection

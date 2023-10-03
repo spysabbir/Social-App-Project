@@ -1,31 +1,41 @@
-<div class="card">
-    <div class="card-header p-3 bg-info text-center">
-        <h5 class="text-center">Forgot Password</h5>
-        <a class="text-primary" href="{{ route('login') }}">Remember password?</a>
-    </div>
-    <div class="card-body">
-        <p>
-            Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.
-        </p>
+@extends('frontend.layouts.auth-master')
 
-        @if (session('status'))
-            <div class="alert alert-primary" role="alert">
-                <strong>{{ session('status') }}</strong>
+@section('title', 'Forgot Password')
+
+@section('content')
+<div class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
+   <div class="main-content mb-5">
+        <div class="card">
+            <div class="card-header p-3 bg-success text-center text-white">
+                <h5 class="text-center">Forgot Password</h5>
+                <a class="text-white" href="{{ route('login') }}">Remember password?</a>
             </div>
-        @endif
+            <div class="card-body">
+                <p>
+                    Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.
+                </p>
 
-        <form method="POST" action="{{ route('password.email') }}">
-            @csrf
+                @if (session('status'))
+                    <div class="alert alert-primary">
+                        <strong>{{ session('status') }}</strong>
+                    </div>
+                @endif
 
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input class="form-control" type="email" name="email" value="{{ old('email') }}" placeholder="Enter email" />
-                @error('email')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+                <form method="POST" action="{{ route('password.email') }}">
+                    @csrf
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input class="form-control" type="email" name="email" value="{{ old('email') }}" placeholder="Enter email" />
+                        @error('email')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Email Password Reset Link</button>
+                </form>
             </div>
-
-            <button type="submit" class="btn btn-info">Email Password Reset Link</button>
-        </form>
+        </div>
     </div>
 </div>
+@endsection
