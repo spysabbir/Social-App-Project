@@ -48,5 +48,7 @@ Route::middleware(['auth', 'role:User'])->group(function () {
         Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
         Route::resource('post', PostController::class);
+        Route::get('/post/like/{id}', [PostController::class, 'postLike'])->name('post.like');
+
     });
 });

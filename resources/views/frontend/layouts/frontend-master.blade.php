@@ -267,8 +267,8 @@
     </div>
     <!-- Footer End -->
 
-    <!-- postModal Start -->
-    <div class="modal fade" id="postModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- createPostModal Start -->
+    <div class="modal fade" id="createPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content rounded-4 p-4 border-0 bg-light">
                 <div class="modal-header d-flex align-items-center justify-content-start border-0 p-0 mb-3">
@@ -292,7 +292,7 @@
                 </div>
                 <div class="modal-footer justify-content-start px-1 py-1 bg-white shadow-sm rounded-5">
                     <div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
-                        <input type="file" class="form-control" name="image_path" id="postImage">
+                        <input type="file" class="form-control" name="image_path" id="postImage" accept=".jpeg, .jpg, .png, .webp">
                     </div>
                     <div class="ms-auto m-0">
                         <button type="submit" class="btn btn-primary rounded-5 fw-bold px-3 py-2 fs-6 mb-0 d-flex align-items-center"><span class="material-icons me-2 md-16">send</span>Post</button>
@@ -302,30 +302,46 @@
             </div>
         </div>
     </div>
-    <!-- postModal End -->
+    <!-- createPostModal End -->
 
-    <!-- logoutModal Start -->
-    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- editPostModal Start -->
+    <div class="modal fade" id="editPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4 p-4 border-0">
-            <div class="modal-header border-0 p-1">
-                <h6 class="modal-title fw-bold text-body fs-6" id="exampleModalLabel">Are you sure?</h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form>
-                <div class="modal-body p-0">
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
-                            Log Out
-                        </a>
-                    </form>
+            <div class="modal-content rounded-4 p-4 border-0 bg-light">
+                <div class="modal-header d-flex align-items-center justify-content-start border-0 p-0 mb-3">
+                    <a href="#" class="text-muted text-decoration-none material-icons" data-bs-dismiss="modal">arrow_back_ios_new</a>
+                    <h5 class="modal-title text-muted ms-3 ln-0" id="staticBackdropLabel"><span class="material-icons md-32">account_circle</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </form>
+                <form action="" method="POST" enctype="multipart/form-data"  id="editPostForm">
+                @csrf
+                @method('PATCH')
+                <input type="hidden" id="post_id">
+                <div class="modal-body p-0 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control rounded-5 border-0 shadow-sm post_content" name="content" placeholder="Enter content" id="floatingTextarea2" style="height: 100px"></textarea>
+                        <label for="floatingTextarea2" class="h6 text-muted mb-0">What's on your mind...</label>
+                        <span class="text-danger error-text update_content_error"></span>
+                    </div>
+                    <div class="form-floating mt-2">
+                        <img src="" alt="postImage" id="updateImagePreview" width="200" height="180">
+                        <br>
+                        <span class="text-danger error-text update_image_path_error"></span>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-start px-1 py-1 bg-white shadow-sm rounded-5">
+                    <div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
+                        <input type="file" class="form-control" name="image_path" id="updateImage" accept=".jpeg, .jpg, .png, .webp">
+                    </div>
+                    <div class="ms-auto m-0">
+                        <button type="submit" class="btn btn-primary rounded-5 fw-bold px-3 py-2 fs-6 mb-0 d-flex align-items-center"><span class="material-icons me-2 md-16">send</span>Post</button>
+                    </div>
+                </div>
+                </form>
             </div>
         </div>
     </div>
-    <!-- logoutModal End -->
+    <!-- editPostModal End -->
 
     <!-- commentModal Start -->
     <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
@@ -534,7 +550,63 @@
                             })
                         }else{
                             $('#createPostForm')[0].reset();
-                            $("#postModal").modal('hide');
+                            $("#createPostModal").modal('hide');
+                            toastr.success(response.message);
+                        }
+                    },
+                });
+            });
+
+            // Edit Data
+            $(document).on('click', '.editBtn', function () {
+                var id = $(this).data('id');
+                var url = "{{ route('post.edit', ":id") }}";
+                url = url.replace(':id', id)
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function (response) {
+                        $('#post_id').val(response.id);
+                        $('.post_content').val(response.content);
+                        $('#updateImagePreview').attr('src', "{{ asset('uploads/post_photo') }}"+"/"+ response.image_path);
+                    },
+                });
+            });
+
+            // Update Image Preview
+            $('#updateImage').change(function(){
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#updateImagePreview').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(this.files[0]);
+            });
+
+            // Update Data
+            $('#editPostForm').on('submit', function (e) {
+                e.preventDefault();
+                var id = $('#post_id').val();
+                var url = "{{ route('post.update', ":id") }}";
+                url = url.replace(':id', id)
+                const formData = new FormData(this);
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    beforeSend:function(){
+                        $(document).find('span.error-text').text('');
+                    },
+                    success: function (response) {
+                        if(response.status == 400){
+                            $.each(response.error, function(prefix, val){
+                                $('span.update_'+prefix+'_error').text(val[0]);
+                            })
+                        }else{
+                            $("#editPostModal").modal('hide');
                             toastr.success(response.message);
                         }
                     },

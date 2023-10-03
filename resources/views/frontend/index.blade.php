@@ -19,15 +19,15 @@
         <div class="tab-content" id="pills-tabContent">
             <!-- Feed Start -->
             <div class="tab-pane fade show active" id="pills-feed" role="tabpanel" aria-labelledby="pills-feed-tab">
-                <div class="input-group mb-4 shadow-sm rounded-4 overflow-hidden py-2 bg-white" data-bs-toggle="modal" data-bs-target="#postModal">
+                <div class="input-group mb-4 shadow-sm rounded-4 overflow-hidden py-2 bg-white" data-bs-toggle="modal" data-bs-target="#createPostModal">
                     <span class="input-group-text material-icons border-0 bg-white text-primary">account_circle</span>
                     <input type="text" class="form-control border-0 fw-light ps-1" placeholder="What's on your mind.">
                     <a href="#" class="text-decoration-none input-group-text bg-white border-0 material-icons text-primary">add_circle</a>
                 </div>
                 <div>
                     <div class="d-flex align-items-center justify-content-between mb-1">
-                    <h6 class="mb-0 fw-bold text-body">Follow People</h6>
-                    <a href="#" class="text-dark text-decoration-none material-icons">east</a>
+                        <h6 class="mb-0 fw-bold text-body">Follow People</h6>
+                        <a href="#" class="text-dark text-decoration-none material-icons">east</a>
                     </div>
 
                     <!-- Follow People Start -->
@@ -46,8 +46,10 @@
                                     </div>
                                     <p class="fw-bold text-dark m-0">{{ $user->name }}</p>
                                     <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                                        <input type="checkbox" class="btn-check followerStatusBtn" id="btncheck1" data-id="{{ $user->id }}" {{ App\Models\Follower::where('follower_id', $user->id)->where('following_id', Auth::user()->id)->first() ? 'checked' : '' }}>
-                                        <label class="btn btn-outline-primary btn-sm px-3 rounded-pill" for="btncheck1"><span class="follow">Follow</span><span class="following d-none">Following</span></label>
+                                        <input type="checkbox" class="btn-check followerStatusBtn" id="btncheck{{ $user->id }}" data-id="{{ $user->id }}" >
+                                        <label class="btn btn-outline-primary btn-sm px-3 rounded-pill" for="btncheck{{ $user->id }}">
+                                            <label class="btn btn-outline-primary btn-sm px-3 rounded-pill" for="btncheck1"><span class="follow">Follow</span><span class="following d-none">Following</span></label>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -79,7 +81,7 @@
                                             <div class="dropdown">
                                                 <a href="#" class="text-muted text-decoration-none material-icons ms-2 md-20 rounded-circle bg-light p-1" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">more_vert</a>
                                                 <ul class="dropdown-menu fs-13 dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                                                    <li data-id="{{ $post->id }}" class="editBtn"><a class="dropdown-item text-muted" href="javascript:void(0)"><span class="material-icons md-13 me-1">edit</span>Edit</a></li>
+                                                    <li data-id="{{ $post->id }}" class="editBtn"><a class="dropdown-item text-muted" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#editPostModal"><span class="material-icons md-13 me-1">edit</span>Edit</a></li>
                                                     <li data-id="{{ $post->id }}" class="deleteBtn"><a class="dropdown-item text-muted" href="javascript:void(0)"><span class="material-icons md-13 me-1">delete</span>Delete</a></li>
                                                 </ul>
                                             </div>
@@ -88,11 +90,18 @@
                                     <div class="my-2">
                                         <p class="text-dark">{{ $post->content }}</p>
                                         <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                        <img src="{{ asset('uploads/post_photo') }}/{{ $post->image_path }}" class="img-fluid rounded mb-3" alt="post-img">
+                                            <img src="{{ asset('uploads/post_photo') }}/{{ $post->image_path }}" class="img-fluid rounded mb-3" alt="post-img">
                                         </a>
                                         <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <div>
-                                                <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-20 me-2">thumb_up_off_alt</span><span>30.4k</span></a>
+                                            <div class="postLikeBox">
+                                                <a data-id="{{ $post->id }}" href="javascript:void(0)" class="text-info text-decoration-none d-flex align-items-start fw-light postLikeBtn">
+                                                    <span class="material-icons md-20 me-2 likeStatus">
+                                                        {{ App\Models\Like::where('post_id', $post->id)->where('user_id', Auth::user()->id)->first() ? 'thumb_up_off_alt' : 'thumb_down_off_alt' }}
+                                                    </span>
+                                                    <span class="likeCount">
+                                                        {{ App\Models\Like::where('post_id', $post->id)->count() }}
+                                                    </span>
+                                                </a>
                                             </div>
                                             <div>
                                                 <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-20 me-2">chat_bubble_outline</span><span>4.0k</span></a>
@@ -163,7 +172,9 @@
                         </div>
                     </a>
                     @empty
-
+                    <div class="alert alert-primary text-center m-3">
+                        <strong>User Not Found</strong>
+                    </div>
                     @endforelse
                 </div>
             </div>
@@ -171,120 +182,78 @@
 
             <!-- Trending Start -->
             <div class="tab-pane fade" id="pills-trending" role="tabpanel" aria-labelledby="pills-trending-tab">
-                <div class="input-group shadow-sm mb-3 rounded-4 overflow-hidden py-2 bg-white" data-bs-toggle="modal" data-bs-target="#postModal">
+                <div class="input-group mb-4 shadow-sm rounded-4 overflow-hidden py-2 bg-white" data-bs-toggle="modal" data-bs-target="#createPostModal">
                     <span class="input-group-text material-icons border-0 bg-white text-primary">account_circle</span>
                     <input type="text" class="form-control border-0 fw-light ps-1" placeholder="What's on your mind.">
                     <a href="#" class="text-decoration-none input-group-text bg-white border-0 material-icons text-primary">add_circle</a>
                 </div>
                 <div class="feeds">
+                    @forelse ($allPost as $post)
                     <div class="bg-white p-3 feed-item rounded-4 mb-3 shadow-sm">
-                    <div class="d-flex">
-                        <img src="{{ asset('frontend') }}/img/rmate1.jpg" class="img-fluid rounded-circle user-img" alt="profile-img">
-                        <div class="d-flex ms-3 align-items-start w-100">
-                            <div>
+                        <div class="d-flex">
+                            <img src="{{ asset('uploads/profile_photo') }}/{{ $post->user->profile_photo }}" class="img-fluid rounded-circle user-img" alt="profile-img">
+                            <div class="d-flex ms-3 align-items-start w-100">
+                                <div class="w-100">
                                 <div class="d-flex align-items-center justify-content-between">
-                                <a href="profile.html" class="text-decoration-none d-flex align-items-center">
-                                    <h6 class="fw-bold mb-0 text-body">Shay Jordon</h6>
-                                    <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span>
-                                    <small class="text-muted ms-2">@shay-jordon</small>
-                                </a>
-                                <div class="d-flex align-items-center small">
-                                    <p class="text-muted mb-0">19 Feb</p>
-                                    <div class="dropdown">
-                                        <a href="#" class="text-muted text-decoration-none material-icons ms-2 md-20 rounded-circle bg-light p-1" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">more_vert</a>
-                                        <ul class="dropdown-menu fs-13 dropdown-menu-end" aria-labelledby="dropdownMenuButton3">
-                                            <li><a class="dropdown-item text-muted" href="#"><span class="material-icons md-13 me-1">edit</span>Edit</a></li>
-                                            <li><a class="dropdown-item text-muted" href="#"><span class="material-icons md-13 me-1">delete</span>Delete</a></li>
-                                            <li><a class="dropdown-item text-muted" href="#"><span class="material-icons md-13 me-1 ltsp-n5">arrow_back_ios arrow_forward_ios</span>Embed Vogel</a></li>
-                                            <li><a class="dropdown-item text-muted d-flex align-items-center" href="#"><span class="material-icons md-13 me-1">share</span>Share via another apps</a></li>
-                                        </ul>
+                                    <a href="profile.html" class="text-decoration-none d-flex align-items-center">
+                                        <h6 class="fw-bold mb-0 text-body">{{ $post->user->name }}</h6>
+                                        <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span>
+                                        <small class="text-muted ms-2">{{ $post->user->username }}</small>
+                                    </a>
+                                    <div class="d-flex align-items-center small">
+                                        <p class="text-muted mb-0">{{ $post->created_at->format('D d-M,Y h:i:s A') }}</p>
+                                        <div class="dropdown">
+                                            <a href="#" class="text-muted text-decoration-none material-icons ms-2 md-20 rounded-circle bg-light p-1" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">more_vert</a>
+                                            <ul class="dropdown-menu fs-13 dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                                                <li data-id="{{ $post->id }}" class="editBtn"><a class="dropdown-item text-muted" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#editPostModal"><span class="material-icons md-13 me-1">edit</span>Edit</a></li>
+                                                <li data-id="{{ $post->id }}" class="deleteBtn"><a class="dropdown-item text-muted" href="javascript:void(0)"><span class="material-icons md-13 me-1">delete</span>Delete</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
                                 </div>
                                 <div class="my-2">
-                                <p>Congue aliquam scripserit eam ex, vis ad prompta mnesarchum, ad atqui suscipit vel. Omnis soluta ut mel, eum consequat adversarium definitionem ei. Sit cu elit laboramus similique, error exerci tacimates nam eu. Ferri eirmod latine ex sit. Cu nec munere viderer. Vix inermis periculis abhorreant te. Augue homero prompta eum eu, no est discere commune, velit mentitum vis ne.
-                                    🙂
-                                </p>
-                                <p class="text-dark">Happy Vogel to you!</p>
-                                <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                <img src="{{ asset('frontend') }}/img/post1.png" class="img-fluid rounded mb-3" alt="post-img">
-                                </a>
-                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <div>
-                                        <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-20 me-2">thumb_up_off_alt</span><span>30.4k</span></a>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-20 me-2">chat_bubble_outline</span><span>4.0k</span></a>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-20 me-2">repeat</span><span>617</span></a>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-18 me-2">share</span><span>Share</span></a>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center mb-3" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                    <span class="material-icons bg-white border-0 text-primary pe-2 md-36">account_circle</span>
-                                    <input type="text" class="form-control form-control-sm rounded-3 fw-light" placeholder="Write Your comment">
-                                </div>
-                                <div class="comments">
-                                    <div class="d-flex mb-2">
-                                        <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                        <img src="{{ asset('frontend') }}/img/rmate1.jpg" class="img-fluid rounded-circle" alt="commenters-img">
-                                        </a>
-                                        <div class="ms-2 small">
-                                            <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                            <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
-                                                <p class="fw-500 mb-0">Macie Bellis</p>
-                                                <span class="text-muted">Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolor.</span>
-                                            </div>
+                                    <p class="text-dark">{{ $post->content }}</p>
+                                    <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
+                                        <img src="{{ asset('uploads/post_photo') }}/{{ $post->image_path }}" class="img-fluid rounded mb-3" alt="post-img">
+                                    </a>
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <div class="postLikeBox">
+                                            <a data-id="{{ $post->id }}" href="javascript:void(0)" class="text-info text-decoration-none d-flex align-items-start fw-light postLikeBtn">
+                                                <span class="material-icons md-20 me-2 likeStatus">
+                                                    {{ App\Models\Like::where('post_id', $post->id)->where('user_id', Auth::user()->id)->first() ? 'thumb_up_off_alt' : 'thumb_down_off_alt' }}
+                                                </span>
+                                                <span class="likeCount">
+                                                    {{ App\Models\Like::where('post_id', $post->id)->count() }}
+                                                </span>
                                             </a>
-                                            <div class="d-flex align-items-center ms-2">
-                                            <a href="#" class="small text-muted text-decoration-none">Like</a>
-                                            <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                            <a href="#" class="small text-muted text-decoration-none">Reply</a>
-                                            <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                            <span class="small text-muted">1h</span>
-                                            </div>
+                                        </div>
+                                        <div>
+                                            <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-20 me-2">chat_bubble_outline</span><span>4.0k</span></a>
                                         </div>
                                     </div>
-                                    <div class="d-flex mb-2">
-                                        <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                        <img src="{{ asset('frontend') }}/img/rmate3.jpg" class="img-fluid rounded-circle" alt="commenters-img">
-                                        </a>
-                                        <div class="ms-2 small">
-                                            <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                            <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
-                                                <p class="fw-500 mb-0">John Smith</p>
-                                                <span class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</span>
-                                            </div>
-                                            </a>
-                                            <div class="d-flex align-items-center ms-2">
-                                            <a href="#" class="small text-muted text-decoration-none">Like</a>
-                                            <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                            <a href="#" class="small text-muted text-decoration-none">Reply</a>
-                                            <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                            <span class="small text-muted">20min</span>
-                                            </div>
-                                        </div>
+                                    <div class="d-flex align-items-center mb-3" data-bs-toggle="modal" data-bs-target="#commentModal">
+                                        <span class="material-icons bg-white border-0 text-primary pe-2 md-36">account_circle</span>
+                                        <input type="text" class="form-control form-control-sm rounded-3 fw-light" placeholder="Write Your comment" readonly>
                                     </div>
-                                    <div class="d-flex mb-2">
-                                        <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                        <img src="{{ asset('frontend') }}/img/rmate2.jpg" class="img-fluid rounded-circle" alt="commenters-img">
-                                        </a>
-                                        <div class="ms-2 small">
+                                    <div class="comments">
+                                        <div class="d-flex mb-2">
                                             <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                            <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
-                                                <p class="fw-500 mb-0">Shay Jordon</p>
-                                                <span class="text-muted">With our vastly improved notifications system, users have more control.</span>
-                                            </div>
+                                            <img src="{{ asset('frontend') }}/img/rmate1.jpg" class="img-fluid rounded-circle" alt="commenters-img">
+                                            </a>
+                                            <div class="ms-2 small">
+                                            <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
+                                                <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
+                                                    <p class="fw-500 mb-0">Macie Bellis</p>
+                                                    <span class="text-muted">Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolor.</span>
+                                                </div>
                                             </a>
                                             <div class="d-flex align-items-center ms-2">
-                                            <a href="#" class="small text-muted text-decoration-none">Like</a>
-                                            <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                            <a href="#" class="small text-muted text-decoration-none">Reply</a>
-                                            <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                            <span class="small text-muted">10min</span>
+                                                <a href="#" class="small text-muted text-decoration-none">Like</a>
+                                                <span class="fs-3 text-muted material-icons mx-1">circle</span>
+                                                <a href="#" class="small text-muted text-decoration-none">Reply</a>
+                                                <span class="fs-3 text-muted material-icons mx-1">circle</span>
+                                                <span class="small text-muted">1h</span>
+                                            </div>
                                             </div>
                                         </div>
                                     </div>
@@ -293,132 +262,22 @@
                             </div>
                         </div>
                     </div>
+                    @empty
+                    <div class="alert alert-info">
+                        <strong>Post Not Found</strong>
                     </div>
-                    <div class="bg-white p-3 feed-item rounded-4 mb-3 shadow-sm">
-                    <div class="d-flex">
-                        <img src="{{ asset('frontend') }}/img/rmate4.jpg" class="img-fluid rounded-circle user-img" alt="profile-img">
-                        <div class="d-flex ms-3 align-items-start w-100">
-                            <div>
-                                <div class="d-flex align-items-center justify-content-between">
-                                <a href="profile.html" class="text-decoration-none d-flex align-items-center">
-                                    <h6 class="fw-bold mb-0 text-body">John Smith</h6>
-                                    <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span>
-                                    <small class="text-muted ms-2">@johnsmith</small>
-                                </a>
-                                <div class="d-flex align-items-center small">
-                                    <p class="text-muted mb-0">19 Feb</p>
-                                    <div class="dropdown">
-                                        <a href="#" class="text-muted text-decoration-none material-icons ms-2 md-20 rounded-circle bg-light p-1" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">more_vert</a>
-                                        <ul class="dropdown-menu fs-13 dropdown-menu-end" aria-labelledby="dropdownMenuButton4">
-                                            <li><a class="dropdown-item text-muted" href="#"><span class="material-icons md-13 me-1">edit</span>Edit</a></li>
-                                            <li><a class="dropdown-item text-muted" href="#"><span class="material-icons md-13 me-1">delete</span>Delete</a></li>
-                                            <li><a class="dropdown-item text-muted" href="#"><span class="material-icons md-13 me-1 ltsp-n5">arrow_back_ios arrow_forward_ios</span>Embed Vogel</a></li>
-                                            <li><a class="dropdown-item text-muted d-flex align-items-center" href="#"><span class="material-icons md-13 me-1">share</span>Share via another apps</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                </div>
-                                <div class="my-2">
-                                <p>Nam malis menandri ea, facete debitis volumus est ut, commune placerat nominati ei sea. Labore alterum probatus no sed, ius ea quas iusto inermis, ex tantas populo nonumes nam. Quo ad verear copiosae gubergren, quis commodo est et. </p>
-                                <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                <img src="{{ asset('frontend') }}/img/post2.png" class="img-fluid rounded mb-3" alt="post-img">
-                                </a>
-                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <div>
-                                        <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-20 me-2">thumb_up_off_alt</span><span>30.4k</span></a>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-20 me-2">chat_bubble_outline</span><span>4.0k</span></a>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-20 me-2">repeat</span><span>617</span></a>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-18 me-2">share</span><span>Share</span></a>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center mb-3" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                    <span class="material-icons bg-white border-0 text-primary pe-2 md-36">account_circle</span>
-                                    <input type="text" class="form-control form-control-sm rounded-3 fw-light" placeholder="Write Your comment">
-                                </div>
-                                <div class="comments">
-                                    <div class="d-flex mb-2">
-                                        <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                        <img src="{{ asset('frontend') }}/img/rmate1.jpg" class="img-fluid rounded-circle" alt="commenters-img">
-                                        </a>
-                                        <div class="ms-2 small">
-                                            <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                            <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
-                                                <p class="fw-500 mb-0">Macie Bellis</p>
-                                                <span class="text-muted">Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolor.</span>
-                                            </div>
-                                            </a>
-                                            <div class="d-flex align-items-center ms-2">
-                                            <a href="#" class="small text-muted text-decoration-none">Like</a>
-                                            <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                            <a href="#" class="small text-muted text-decoration-none">Reply</a>
-                                            <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                            <span class="small text-muted">1h</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex mb-2">
-                                        <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                        <img src="{{ asset('frontend') }}/img/rmate3.jpg" class="img-fluid rounded-circle" alt="commenters-img">
-                                        </a>
-                                        <div class="ms-2 small">
-                                            <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                            <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
-                                                <p class="fw-500 mb-0">John Smith</p>
-                                                <span class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</span>
-                                            </div>
-                                            </a>
-                                            <div class="d-flex align-items-center ms-2">
-                                            <a href="#" class="small text-muted text-decoration-none">Like</a>
-                                            <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                            <a href="#" class="small text-muted text-decoration-none">Reply</a>
-                                            <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                            <span class="small text-muted">20min</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex mb-2">
-                                        <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                        <img src="{{ asset('frontend') }}/img/rmate2.jpg" class="img-fluid rounded-circle" alt="commenters-img">
-                                        </a>
-                                        <div class="ms-2 small">
-                                            <a href="#" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                            <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
-                                                <p class="fw-500 mb-0">Shay Jordon</p>
-                                                <span class="text-muted">With our vastly improved notifications system, users have more control.</span>
-                                            </div>
-                                            </a>
-                                            <div class="d-flex align-items-center ms-2">
-                                            <a href="#" class="small text-muted text-decoration-none">Like</a>
-                                            <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                            <a href="#" class="small text-muted text-decoration-none">Reply</a>
-                                            <span class="fs-3 text-muted material-icons mx-1">circle</span>
-                                            <span class="small text-muted">10min</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
             <!-- Trending End -->
         </div>
     </div>
-    <div class="text-center mt-4">
+    {{-- <div class="text-center mt-4">
        <div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
        </div>
        <p class="mb-0 mt-2">Loading</p>
-    </div>
+    </div> --}}
  </main>
 @endsection
 
@@ -457,7 +316,7 @@
             })
         })
 
-        // Status Change
+        // Follower Status Change
         $(document).on('click', '.followerStatusBtn', function () {
             var id = $(this).data('id');
             var url = "{{ route('follower.status', ":id") }}";
@@ -466,7 +325,29 @@
                 url: url,
                 type: "GET",
                 success: function (response) {
-                    toastr.success('Follower status change successfully.');
+                    // if (response.followerStatus) {
+                    //     $(this).closest(".account-item").find(".followerStatus").text('Follow');
+                    // } else {
+                    //     $(this).closest(".account-item").find(".followerStatus").text('Following');
+                    // }
+                },
+            });
+        });
+
+        // POst Like
+        $(document).on('click', '.postLikeBtn', function () {
+            var id = $(this).data('id');
+            var url = "{{ route('post.like', ":id") }}";
+            url = url.replace(':id', id)
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (response) {
+                    // if (response.likeStatus) {
+                    //     $(this).closest(".postLikeBox").find(".likeStatus").text('thumb_down_off_alt');
+                    // } else {
+                    //     $(this).closest(".postLikeBox").find(".likeStatus").text('thumb_up_off_alt');
+                    // }
                 },
             });
         });

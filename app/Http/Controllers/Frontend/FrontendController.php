@@ -22,15 +22,19 @@ class FrontendController extends Controller
 
     public function followerStatus($id)
     {
-        $follower = Follower::where('follower_id', $id)->where('following_id', Auth::user()->id)->first();
-        if(!$follower){
+        $followerStatus = Follower::where('follower_id', $id)->where('following_id', Auth::user()->id)->first();
+        if(!$followerStatus){
             Follower::insert([
                 'follower_id' => $id,
                 'following_id' => Auth::user()->id,
                 'created_at' =>Carbon::now(),
             ]);
         }else{
-            $follower->delete();
+            $followerStatus->delete();
         }
+
+        return response()->json([
+            'followerStatus' => $followerStatus,
+        ]);
     }
 }

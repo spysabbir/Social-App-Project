@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Like;
 use App\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -46,12 +47,44 @@ class PostController extends Controller
 
     public function edit(string $id)
     {
-        //
+        $post = Post::where('id', $id)->first();
+        return response()->json($post);
     }
 
     public function update(Request $request, string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'content' => 'required',
+            'image_path' => 'nullable|image|mimes:png,jpg,jpeg,webp',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 400,
+                'error'=> $validator->errors()->toArray()
+            ]);
+        }else{
+            $post->update([
+                'content' => $request->content,
+            ]);
+
+            if($request->hasFile('image_path')){
+                unlink(base_path("public/uploads/post_photo/").$post->image_path);
+                $post_photo_name = "Post-Photo-".Str::random(10).".". $request->file('image_path')->getClientOriginalExtension();
+                $upload_link = base_path("public/uploads/post_photo/").$post_photo_name;
+                Image::make($request->file('image_path'))->resize(120, 120)->save($upload_link);
+                $post->update([
+                    'image_path' => $post_photo_name,
+                ]);
+            }
+
+            return response()->json([
+                'status' => 200,
+                'message'=> "Post update successfully."
+            ]);
+        }
     }
 
     public function destroy(string $id)
@@ -61,4 +94,24 @@ class PostController extends Controller
         $post->delete();
     }
 
+    public function postLike(string $id)
+    {
+        $likeStatus = Like::where('post_id', $id)->where('user_id', Auth::user()->id)->first();
+        if(!$likeStatus){
+            Like::insert([
+                'post_id' => $id,
+                'user_id' => Auth::user()->id,
+                'created_at' =>Carbon::now(),
+            ]);
+        }else{
+            $likeStatus->delete();
+        }
+
+        $likeCount = Like::where('post_id', $id)->count();
+
+        return response()->json([
+            'likeStatus' => $likeStatus,
+            'likeCount' => $likeCount,
+        ]);
+    }
 }
