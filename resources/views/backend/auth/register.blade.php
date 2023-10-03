@@ -1,69 +1,66 @@
-<div class="card">
-    <div class="card-header p-3 bg-info text-center">
-        <h5 class="text-center">Register</h5>
-        <a class="text-primary" href="{{ route('admin.login') }}">Already registered?</a>
-    </div>
-    <div class="card-body">
-        <form method="POST" action="{{ route('admin.register') }}">
-            @csrf
-            <input type="hidden" name="role" value="Admin">
-            <div class="mb-3">
-                <label class="form-label">Full Name</label>
-                <input class="form-control" type="text" name="name" value="{{ old('name') }}" placeholder="Enter full name" />
-                @error('name')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input class="form-control" type="email" name="email" value="{{ old('email') }}" placeholder="Enter email" />
-                @error('email')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Date of Birth</label>
-                <input class="form-control" type="date" name="date_of_birth" value="{{ old('date_of_birth') }}" />
-                @error('date_of_birth')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Gender</label>
-                <div class="form-check">
-                    <label class="mr-4">
-                        <input type="radio" id="Male" class="form-check-input" name="gender" value="Male" {{ old('gender') == 'Male' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="Male">Male</label>
-                    </label>
-                    <label class="mr-4">
-                        <input type="radio" id="Female" class="form-check-input" name="gender" value="Female" {{ old('gender') == 'Female' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="Female">Female</label>
-                    </label>
-                    <label class="mr-4">
-                        <input type="radio" id="Other" class="form-check-input" name="gender" value="Other" {{ old('gender') == 'Other' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="Other">Other</label>
-                    </label>
-                </div>
-                @error('gender')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input class="form-control" type="password" name="password" placeholder="Enter password" />
-                @error('password')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Confirm Password</label>
-                <input class="form-control" type="password" name="password_confirmation" placeholder="Enter confirm password" />
-                @error('password_confirmation')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
+@extends('backend.layouts.auth-master')
 
-            <button type="submit" class="btn btn-info">Register</button>
-        </form>
+@section('title', 'Register')
+
+@section('content')
+<div class="authentication-header"></div>
+<div class="d-flex align-items-center justify-content-center my-5 my-lg-0">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2">
+            <div class="col mx-auto">
+                <div class="my-4 text-center">
+                    <img src="{{ asset('backend') }}/images/logo-img.png" width="180" alt="" />
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="p-4 rounded">
+                            <div class="form-body">
+                                <form class="row g-3" method="POST" action="{{ route('admin.register') }}">
+                                    @csrf
+                                    <div class="col-12">
+                                        <label class="form-label">Full Name</label>
+                                        <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Enter full name">
+                                        @error('name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Enter email" >
+                                        @error('email')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="inputChoosePassword" class="form-label">Password</label>
+                                        <div class="input-group" id="show_hide_password">
+                                            <input type="password" class="form-control border-end-0" name="password" placeholder="Enter password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
+                                        </div>
+                                        @error('password')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="inputChoosePassword" class="form-label">Confirm Password</label>
+                                        <div class="input-group" id="show_hide_password">
+                                            <input type="password" class="form-control border-end-0" name="password_confirmation" placeholder="Enter confirm password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
+                                        </div>
+                                        @error('password_confirmation')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary"><i class='bx bx-user'></i>Sign up</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end row-->
     </div>
 </div>
