@@ -8,12 +8,11 @@
         <div class="card m-5">
             <div class="card-header p-3 bg-success text-center text-white">
                 <h5 class="text-center">Register</h5>
-                <a class="text-white" href="{{ route('login') }}">Already registered?</a>
+                <a class="text-white" href="{{ route('login') }}">Already registered? Login...</a>
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
-                    <input type="hidden" name="role" value="User">
                     <div class="mb-3">
                         <label class="form-label">Full Name</label>
                         <input class="form-control" type="text" name="name" value="{{ old('name') }}" placeholder="Enter full name" />

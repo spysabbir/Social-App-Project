@@ -14,15 +14,29 @@ class FrontendController extends Controller
 {
     public function index()
     {
-        $allPost = Post::all();
         $trendingPost = Post::all();
         $followerIds = Follower::where('following_id', auth()->user()->id)->pluck('follower_id');
         $allUser = User::where('role', 'User')->where('id', '!=', auth()->user()->id)->whereNotIn('id', $followerIds)->inRandomOrder()->get();
+
+        $allPost = Post::whereIn('user_id', $followerIds)->latest()->get();
 
         $allFollower = Follower::where('follower_id', auth()->user()->id)->get();
         $allFollowing = Follower::where('following_id', auth()->user()->id)->get();
 
         return view('frontend.index', compact('allUser', 'allPost', 'trendingPost', 'allFollower', 'allFollowing'));
+    }
+
+    public function follower()
+    {
+        $allFollower = Follower::where('follower_id', auth()->user()->id)->get();
+        $allFollowing = Follower::where('following_id', auth()->user()->id)->get();
+        return view('frontend.follower', compact('allFollower', 'allFollowing'));
+    }
+    public function following()
+    {
+        $allFollower = Follower::where('follower_id', auth()->user()->id)->get();
+        $allFollowing = Follower::where('following_id', auth()->user()->id)->get();
+        return view('frontend.following', compact('allFollowing', 'allFollower'));
     }
 
     public function followerStatus($id)
@@ -37,10 +51,6 @@ class FrontendController extends Controller
         }else{
             $followerStatus->delete();
         }
-
-        return response()->json([
-            'followerStatus' => $followerStatus,
-        ]);
     }
 
     public function timeline ($id)
@@ -51,6 +61,11 @@ class FrontendController extends Controller
 
         $allPost = Post::where('user_id', $id)->get();
 
-        return view('frontend.profile.timeline', compact('user', 'follower_count', 'following_count', 'allPost'));
+        $allFollower = Follower::where('follower_id', auth()->user()->id)->get();
+        $allFollowing = Follower::where('following_id', auth()->user()->id)->get();
+
+        $followStatus = Follower::where('follower_id', $id)->where('following_id', auth()->user()->id)->first();
+
+        return view('frontend.profile.timeline', compact('user', 'follower_count', 'following_count', 'allPost', 'allFollower', 'allFollowing', 'followStatus'));
     }
 }

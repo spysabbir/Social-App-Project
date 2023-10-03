@@ -1,6 +1,6 @@
 @extends('frontend.layouts.frontend-master')
 
-@section('title', 'Profile')
+@section('title', 'Timeline')
 
 @section('content')
 <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
@@ -10,7 +10,6 @@
              <a href="{{ route('index') }}" class="material-icons text-dark text-decoration-none m-none me-3">arrow_back</a>
              <p class="ms-2 mb-0 fw-bold text-body fs-6">{{ $user->name }}</p>
           </div>
-          <a href="#" class="text-decoration-none material-icons md-20 ms-auto text-muted">share</a>
        </div>
        <div class="bg-white rounded-4 shadow-sm profile">
             <div class="d-flex align-items-center px-3 pt-3">
@@ -20,8 +19,10 @@
                     <p class="text-muted mb-0">{{ $user->username }}</p>
                 </div>
                 <div class="ms-auto btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                    <input type="checkbox" class="btn-check" id="btncheck1">
-                    <label class="btn btn-outline-primary btn-sm px-3 rounded-pill" for="btncheck1"><span class="follow">Follow</span><span class="following d-none">Following</span></label>
+                    <input type="checkbox" class="btn-check followerStatusBtn" id="btncheck{{ $user->id }}" data-id="{{ $user->id }}" {{ $followStatus ? 'checked' : '' }}>
+                    <label class="btn btn-outline-primary btn-sm px-3 rounded-pill" for="btncheck{{ $user->id }}">
+                        {{ $followStatus ? 'Following' : 'Follow' }}
+                    </label>
                 </div>
             </div>
             <div class="p-3">
@@ -77,5 +78,5 @@
             </div>
        </div>
     </div>
- </main>
- @endsection
+</main>
+@endsection

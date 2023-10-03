@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Follower;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -12,8 +14,18 @@ class ProfileController extends Controller
 {
     public function profile(Request $request)
     {
+        $allFollower = Follower::where('follower_id', auth()->user()->id)->get();
+        $allFollowing = Follower::where('following_id', auth()->user()->id)->get();
+
+        $allPost = Post::where('user_id', auth()->user()->id)->get();
+
         return view('frontend.profile.index', [
             'user' => $request->user(),
+            'allFollower' => $allFollower,
+            'allFollowing' => $allFollowing,
+            'follower_count' => $allFollower->count(),
+            'following_count' => $allFollowing->count(),
+            'allPost' => $allPost,
         ]);
     }
 

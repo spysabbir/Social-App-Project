@@ -39,6 +39,8 @@ Route::middleware(['auth', 'role:User'])->group(function () {
 
     Route::middleware(['verified'])->group(function () {
         Route::get('/', [FrontendController::class, 'index'])->name('index');
+        Route::get('/follower', [FrontendController::class, 'follower'])->name('follower');
+        Route::get('/following', [FrontendController::class, 'following'])->name('following');
 
         Route::get('/follower/status/{id}', [FrontendController::class, 'followerStatus'])->name('follower.status');
 
@@ -51,9 +53,11 @@ Route::middleware(['auth', 'role:User'])->group(function () {
 
         Route::resource('post', PostController::class);
         Route::get('/post/like/{id}', [PostController::class, 'postLike'])->name('post.like');
+        Route::get('post/like/list/{id}', [PostController::class, 'postLikeList'])->name('post.like.list');
 
         Route::post('post/comment/{id}', [PostController::class, 'postComment'])->name('post.comment');
         Route::get('post/comment/delete/{id}', [PostController::class, 'postCommentDelete'])->name('post.comment.delete');
+        Route::get('post/comment/list/{id}', [PostController::class, 'postCommentList'])->name('post.comment.list');
 
     });
 });

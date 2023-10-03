@@ -107,13 +107,6 @@ class PostController extends Controller
         }else{
             $likeStatus->delete();
         }
-
-        $likeCount = Like::where('post_id', $id)->count();
-
-        return response()->json([
-            'likeStatus' => $likeStatus,
-            'likeCount' => $likeCount,
-        ]);
     }
 
     public function postComment(Request $request, string $id)
@@ -134,12 +127,6 @@ class PostController extends Controller
                 'content' => $request->content,
                 'created_at' =>Carbon::now(),
             ]);
-
-            $commentCount = Comment::where('post_id', $id)->count();
-
-            return response()->json([
-                'commentCount' => $commentCount,
-            ]);
         }
     }
 
@@ -147,5 +134,19 @@ class PostController extends Controller
     {
         $comment = Comment::findOrFail($id);
         $comment->delete();
+
+        return back();
+    }
+
+    public function postLikeList($id)
+    {
+        $allLike = Like::where('post_id', $id)->get();
+        return view('frontend.layouts.like-list', compact('allLike'));
+    }
+
+    public function postCommentList($id)
+    {
+        $allComment = Comment::where('post_id', $id)->get();
+        return view('frontend.layouts.comment-list', compact('allComment'));
     }
 }

@@ -8,7 +8,7 @@
         <div class="card m-5">
             <div class="card-header p-3 bg-success text-center text-white">
                 <h5 class="text-center">Login</h5>
-                <a class="text-white" href="{{ route('register') }}">Not an account?</a>
+                <a class="text-white" href="{{ route('register') }}">Don't have an account? Please create an account.</a>
             </div>
             <div class="card-body">
 

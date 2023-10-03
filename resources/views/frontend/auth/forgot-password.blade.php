@@ -8,7 +8,7 @@
         <div class="card">
             <div class="card-header p-3 bg-success text-center text-white">
                 <h5 class="text-center">Forgot Password</h5>
-                <a class="text-white" href="{{ route('login') }}">Remember password?</a>
+                <a class="text-white" href="{{ route('login') }}">Remember the password? Login...</a>
             </div>
             <div class="card-body">
                 <p>
