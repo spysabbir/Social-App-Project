@@ -53,6 +53,7 @@ Route::middleware(['auth', 'role:User'])->group(function () {
         Route::get('/post/like/{id}', [PostController::class, 'postLike'])->name('post.like');
 
         Route::post('post/comment/{id}', [PostController::class, 'postComment'])->name('post.comment');
+        Route::get('post/comment/delete/{id}', [PostController::class, 'postCommentDelete'])->name('post.comment.delete');
 
     });
 });

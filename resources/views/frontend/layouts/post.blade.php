@@ -65,6 +65,11 @@
                             </a>
                             <div class="d-flex align-items-center ms-2">
                                 <span class="small text-muted">{{ $comment->created_at->format('D d,M-Y') }}</span>
+                                @if ($comment->user_id == Auth::user()->id)
+                                <a href="{{ route('post.comment.delete', $comment->id) }}" class="text-danger text-decoration-none">
+                                    Delete
+                                </a>
+                                @endif
                             </div>
                         </div>
                     </div>

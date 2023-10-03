@@ -142,4 +142,10 @@ class PostController extends Controller
             ]);
         }
     }
+
+    public function postCommentDelete(string $id)
+    {
+        $comment = Comment::findOrFail($id);
+        $comment->delete();
+    }
 }
