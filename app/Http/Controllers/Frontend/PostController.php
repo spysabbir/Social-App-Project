@@ -60,4 +60,5 @@ class PostController extends Controller
         unlink(base_path("public/uploads/post_photo/").$post->image_path);
         $post->delete();
     }
+
 }

@@ -32,26 +32,29 @@
 
                     <!-- Follow People Start -->
                     <div class="account-slider">
+                        @forelse ($allUser as $user)
                         <div class="account-item">
                             <div class="me-2 bg-white shadow-sm rounded-4 p-3 user-list-item d-flex justify-content-center my-2">
                                 <div class="text-center">
                                     <div class="position-relative d-flex justify-content-center">
-                                    <a href="profile.html" class="text-decoration-none">
-                                        <img src="{{ asset('frontend') }}/img/rmate1.jpg" class="img-fluid rounded-circle mb-3" alt="profile-img">
-                                        <div class="position-absolute">
-                                            <span class="material-icons bg-primary small p-1 fw-bold text-white rounded-circle">done</span>
-                                        </div>
-                                    </a>
+                                        <a href="profile.html" class="text-decoration-none">
+                                            <img src="{{ asset('uploads/profile_photo') }}/{{ $user->profile_photo }}" class="img-fluid rounded-circle mb-3" alt="profile-img">
+                                            <div class="position-absolute">
+                                                <span class="material-icons bg-primary small p-1 fw-bold text-white rounded-circle">done</span>
+                                            </div>
+                                        </a>
                                     </div>
-                                    <p class="fw-bold text-dark m-0">Anisa Keena</p>
-                                    <p class="small text-muted">Designer</p>
+                                    <p class="fw-bold text-dark m-0">{{ $user->name }}</p>
                                     <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                                    <input type="checkbox" class="btn-check" id="btncheck1" checked>
-                                    <label class="btn btn-outline-primary btn-sm px-3 rounded-pill" for="btncheck1"><span class="follow">+ Follow</span><span class="following d-none">Following</span></label>
+                                        <input type="checkbox" class="btn-check followerStatusBtn" id="btncheck1" data-id="{{ $user->id }}" {{ App\Models\Follower::where('follower_id', $user->id)->where('following_id', Auth::user()->id)->first() ? 'checked' : '' }}>
+                                        <label class="btn btn-outline-primary btn-sm px-3 rounded-pill" for="btncheck1"><span class="follow">Follow</span><span class="following d-none">Following</span></label>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        @empty
+
+                        @endforelse
                     </div>
                     <!-- Follow People End -->
 
@@ -610,6 +613,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
         // Delete Data
         $(document).on('click', '.deleteBtn', function(){
             var id = $(this).data('id');
@@ -635,6 +639,20 @@
                 }
             })
         })
+
+        // Status Change
+        $(document).on('click', '.followerStatusBtn', function () {
+            var id = $(this).data('id');
+            var url = "{{ route('follower.status', ":id") }}";
+            url = url.replace(':id', id)
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (response) {
+                    toastr.success('Follower status change successfully.');
+                },
+            });
+        });
     })
 </script>
 @endsection

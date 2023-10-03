@@ -41,6 +41,8 @@ Route::middleware(['auth', 'role:User'])->group(function () {
 
     Route::get('/', [FrontendController::class, 'index'])->name('index');
 
+    Route::get('/follower/status/{id}', [FrontendController::class, 'followerStatus'])->name('follower.status');
+
     Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
