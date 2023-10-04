@@ -127,6 +127,9 @@ class PostController extends Controller
                 'content' => $request->content,
                 'created_at' =>Carbon::now(),
             ]);
+            return response()->json([
+                'status' => 200,
+            ]);
         }
     }
 

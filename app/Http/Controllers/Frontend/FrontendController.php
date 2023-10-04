@@ -18,7 +18,7 @@ class FrontendController extends Controller
         $followerIds = Follower::where('following_id', auth()->user()->id)->pluck('follower_id');
         $allUser = User::where('role', 'User')->where('id', '!=', auth()->user()->id)->whereNotIn('id', $followerIds)->inRandomOrder()->get();
 
-        $allPost = Post::whereIn('user_id', $followerIds)->latest()->get();
+        $allPost = Post::whereIn('user_id', $followerIds)->orWhere('user_id', auth()->user()->id)->latest()->get();
 
         $allFollower = Follower::where('follower_id', auth()->user()->id)->get();
         $allFollowing = Follower::where('following_id', auth()->user()->id)->get();
