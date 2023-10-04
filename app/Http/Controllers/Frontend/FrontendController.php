@@ -26,6 +26,14 @@ class FrontendController extends Controller
         return view('frontend.index', compact('allUser', 'allPost', 'trendingPost', 'allFollower', 'allFollowing'));
     }
 
+    public function indexPostData()
+    {
+        $followerIds = Follower::where('following_id', auth()->user()->id)->pluck('follower_id');
+        $allPost = Post::whereIn('user_id', $followerIds)->orWhere('user_id', auth()->user()->id)->latest()->get();
+
+        return view('frontend.layouts.post', compact('allPost'));
+    }
+
     public function follower()
     {
         $allFollower = Follower::where('follower_id', auth()->user()->id)->get();

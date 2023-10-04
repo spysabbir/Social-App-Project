@@ -39,6 +39,8 @@ Route::middleware(['auth', 'role:User'])->group(function () {
 
     Route::middleware(['verified'])->group(function () {
         Route::get('/', [FrontendController::class, 'index'])->name('index');
+        Route::get('/index-post-data', [FrontendController::class, 'indexPostData'])->name('index.post.data');
+
         Route::get('/follower', [FrontendController::class, 'follower'])->name('follower');
         Route::get('/following', [FrontendController::class, 'following'])->name('following');
 
@@ -47,6 +49,7 @@ Route::middleware(['auth', 'role:User'])->group(function () {
         Route::get('/timeline/{username}', [FrontendController::class, 'timeline'])->name('timeline');
 
         Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
+        Route::get('/profile-post-data', [ProfileController::class, 'profilePostData'])->name('profile.post.data');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::put('password', [PasswordController::class, 'update'])->name('password.update');
@@ -58,6 +61,8 @@ Route::middleware(['auth', 'role:User'])->group(function () {
         Route::post('post/comment/{id}', [PostController::class, 'postComment'])->name('post.comment');
         Route::get('post/comment/delete/{id}', [PostController::class, 'postCommentDelete'])->name('post.comment.delete');
         Route::get('post/comment/list/{id}', [PostController::class, 'postCommentList'])->name('post.comment.list');
+
+
 
     });
 });

@@ -59,14 +59,8 @@
                     <!-- Follow People End -->
 
                     <!-- Post Start -->
-                    <div class="pt-4 feeds">
-                        @forelse ($allPost as $post)
-                            @include('frontend.layouts.post')
-                        @empty
-                        <div class="alert alert-info">
-                            <strong>Post Not Found</strong>
-                        </div>
-                        @endforelse
+                    <div class="pt-4 feeds" id="indexPagePostList">
+                        @include('frontend.layouts.post')
                     </div>
                     <!-- Post End -->
 

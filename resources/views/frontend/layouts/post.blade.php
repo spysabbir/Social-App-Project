@@ -1,3 +1,4 @@
+@forelse ($allPost as $post)
 <div class="bg-white p-3 feed-item rounded-4 mb-3 shadow-sm">
     <div class="d-flex">
         <img src="{{ asset('uploads/profile_photo') }}/{{ $post->user->profile_photo }}" class="img-fluid rounded-circle user-img" alt="profile-img">
@@ -89,3 +90,8 @@
         </div>
     </div>
 </div>
+@empty
+<div class="alert alert-info">
+    <strong>Post Not Found</strong>
+</div>
+@endforelse

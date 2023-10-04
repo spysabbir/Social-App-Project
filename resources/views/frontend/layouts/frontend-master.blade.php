@@ -43,6 +43,7 @@
     <div class="py-4">
         <div class="container">
             <div class="row position-relative">
+
                 <!-- Content Start -->
                 @yield('content')
                 <!-- Content End -->
@@ -358,6 +359,27 @@
                 }
             });
 
+            // Get All Post Data
+            function indexPostData() {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('index.post.data') }}',
+                    success: function (response) {
+                        $('#indexPagePostList').html(response);
+                    },
+                });
+            }
+
+            function profilePostData() {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('profile.post.data') }}',
+                    success: function (response) {
+                        $('#profilePagePostList').html(response);
+                    },
+                });
+            }
+
             // Post Store Image Preview
             $('#postImage').change(function(){
                 var reader = new FileReader();
@@ -370,6 +392,7 @@
             // Post Store Data
             $('#createPostForm').on('submit', function (e) {
                 e.preventDefault();
+                var currentRouteName = "{{ Route::currentRouteName() }}"
                 const formData = new FormData(this);
                 $.ajax({
                     url: "{{ route('post.store') }}",
@@ -391,7 +414,11 @@
                             $('#createPostForm')[0].reset();
                             $("#createPostModal").modal('hide');
                             toastr.success(response.message);
-                            window.location.reload();
+                            indexPostData();
+                            profilePostData();
+                            if(currentRouteName == 'timeline') {
+                                window.location.reload();
+                            }
                         }
                     },
                 });
@@ -425,6 +452,7 @@
             // Post Update Data
             $('#editPostForm').on('submit', function (e) {
                 e.preventDefault();
+                var currentRouteName = "{{ Route::currentRouteName() }}"
                 var id = $('#post_id').val();
                 var url = "{{ route('post.update', ":id") }}";
                 url = url.replace(':id', id)
@@ -448,7 +476,11 @@
                         }else{
                             $("#editPostModal").modal('hide');
                             toastr.success(response.message);
-                            window.location.reload();
+                            indexPostData();
+                            profilePostData();
+                            if(currentRouteName == 'timeline') {
+                                window.location.reload();
+                            }
                         }
                     },
                 });
@@ -456,6 +488,7 @@
 
             // Post Delete Data
             $(document).on('click', '.deleteBtn', function(){
+                var currentRouteName = "{{ Route::currentRouteName() }}"
                 var id = $(this).data('id');
                 var url = "{{ route('post.destroy', ":id") }}";
                 url = url.replace(':id', id)
@@ -474,7 +507,11 @@
                             method: 'DELETE',
                             success: function(response) {
                                 toastr.warning('Post delete successfully.');
-                                window.location.reload();
+                                indexPostData();
+                                profilePostData();
+                                if(currentRouteName == 'timeline') {
+                                    window.location.reload();
+                                }
                             }
                         });
                     }
@@ -498,6 +535,7 @@
 
             // Post Like
             $(document).on('click', '.postLikeBtn', function () {
+                var currentRouteName = "{{ Route::currentRouteName() }}"
                 var id = $(this).data('id');
                 var url = "{{ route('post.like', ":id") }}";
                 url = url.replace(':id', id)
@@ -505,7 +543,12 @@
                     url: url,
                     type: "GET",
                     success: function (response) {
-                        window.location.reload();
+                        indexPostData();
+                        profilePostData();
+
+                        if(currentRouteName == 'timeline') {
+                            window.location.reload();
+                        }
                     },
                 });
             });
@@ -513,6 +556,7 @@
             // Post Comment
             $('.postCommentForm').on('submit', function (e) {
                 e.preventDefault();
+                var currentRouteName = "{{ Route::currentRouteName() }}"
                 var id = $(this).find(".comment_post_id").val();
                 var url = "{{ route('post.comment', ":id") }}";
                 url = url.replace(':id', id)
@@ -534,7 +578,11 @@
                                 $('span.'+prefix+'_error').text(val[0]);
                             })
                         }else{
-                            window.location.reload();
+                            indexPostData();
+                            profilePostData();
+                            if(currentRouteName == 'timeline') {
+                                window.location.reload();
+                            }
                         }
                     },
                 });

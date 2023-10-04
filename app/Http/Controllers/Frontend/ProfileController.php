@@ -29,6 +29,13 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function profilePostData()
+    {
+        $allPost = Post::where('user_id', auth()->user()->id)->get();
+
+        return view('frontend.layouts.post', compact('allPost'));
+    }
+
     public function update(Request $request)
     {
         $request->validate([
