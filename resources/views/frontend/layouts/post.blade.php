@@ -50,7 +50,7 @@
                             <div class="border rounded-4">
                                 <textarea class="form-control rounded-3 fw-light border-0" name="content" placeholder="Write Your comment"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-info border-0  ps-2 text-decoration-none">Comment</button>
+                            <button type="button" class="btn btn-info border-0 commentBtn ps-2 text-decoration-none">Comment</button>
                        </div>
                         <span class="text-danger error-text content_error"></span>
                     </form>

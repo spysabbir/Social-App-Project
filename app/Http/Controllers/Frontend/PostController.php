@@ -109,9 +109,10 @@ class PostController extends Controller
         }
     }
 
-    public function postComment(Request $request, string $id)
+    public function insertComment(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'post_id' => 'required',
             'content' => 'required',
         ]);
 
@@ -123,7 +124,7 @@ class PostController extends Controller
         }else{
             Comment::create([
                 'user_id' => Auth::user()->id,
-                'post_id' => $id,
+                'post_id' => $request->post_id,
                 'content' => $request->content,
                 'created_at' =>Carbon::now(),
             ]);

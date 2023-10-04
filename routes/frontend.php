@@ -41,6 +41,8 @@ Route::middleware(['auth', 'role:User'])->group(function () {
         Route::get('/', [FrontendController::class, 'index'])->name('index');
         Route::get('/index-post-data', [FrontendController::class, 'indexPostData'])->name('index.post.data');
 
+        Route::get('/timeline-post-data/{id}', [FrontendController::class, 'timelinePostData'])->name('timeline.post.data');
+
         Route::get('/follower', [FrontendController::class, 'follower'])->name('follower');
         Route::get('/following', [FrontendController::class, 'following'])->name('following');
 
@@ -58,11 +60,9 @@ Route::middleware(['auth', 'role:User'])->group(function () {
         Route::get('/post/like/{id}', [PostController::class, 'postLike'])->name('post.like');
         Route::get('post/like/list/{id}', [PostController::class, 'postLikeList'])->name('post.like.list');
 
-        Route::post('post/comment/{id}', [PostController::class, 'postComment'])->name('post.comment');
+        Route::post('post/comment', [PostController::class, 'insertComment'])->name('insert.comment');
         Route::get('post/comment/delete/{id}', [PostController::class, 'postCommentDelete'])->name('post.comment.delete');
         Route::get('post/comment/list/{id}', [PostController::class, 'postCommentList'])->name('post.comment.list');
-
-
 
     });
 });

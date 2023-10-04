@@ -76,4 +76,11 @@ class FrontendController extends Controller
 
         return view('frontend.profile.timeline', compact('user', 'follower_count', 'following_count', 'allPost', 'allFollower', 'allFollowing', 'followStatus'));
     }
+
+    public function timelinePostData($id)
+    {
+        $allPost = Post::where('user_id', $id)->get();
+        
+        return view('frontend.layouts.post', compact('allPost'));
+    }
 }

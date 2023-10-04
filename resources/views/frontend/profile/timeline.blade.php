@@ -49,14 +49,8 @@
        <div class="tab-content" id="pills-tabContent">
           <div class="tab-pane fade show active" id="pills-feed" role="tabpanel" aria-labelledby="pills-feed-tab">
              <div class="ms-1">
-                <div class="feeds">
-                    @forelse ($allPost as $post)
-                        @include('frontend.layouts.post')
-                    @empty
-                    <div class="alert alert-info">
-                        <strong>Post Not Found</strong>
-                    </div>
-                    @endforelse
+                <div class="feeds" id="timelinePagePostList">
+                    @include('frontend.layouts.post')
                 </div>
              </div>
             </div>

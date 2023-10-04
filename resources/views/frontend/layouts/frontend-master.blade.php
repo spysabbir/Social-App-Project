@@ -114,7 +114,7 @@
                             <div class="sticky-sidebar2 mb-3">
                                 <div class="input-group mb-4 shadow-sm rounded-4 overflow-hidden py-2 bg-white">
                                     <span class="input-group-text material-icons border-0 bg-white text-primary">search</span>
-                                    <input type="text" class="form-control border-0 fw-light ps-1" placeholder="Search Vogel">
+                                    <input type="text" class="form-control border-0 fw-light ps-1" placeholder="Search ...">
                                 </div>
 
                                 <!-- Follower -->
@@ -324,7 +324,7 @@
     <script src="{{ asset('frontend') }}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('frontend') }}/js/custom.js"></script>
     <script src="{{ asset('frontend') }}/vendor/slick/slick/slick.min.js"></script>
-    <script src="{{ asset('frontend') }}/js/rocket-loader.min.js" data-cf-settings="3a51f4ea14090e051aa8d211-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8b253dfea2ab4077af8c6f58422dfbfd1689876627854" integrity="sha512-bjgnUKX4azu3dLTVtie9u6TKqgx29RBwfj3QXYt5EKfWM/9hPSAI/4qcV5NACjwAo8UtTeWefx6Zq5PHcMm7Tg==" data-cf-beacon='{"rayId":"80fdf8d63fab5fb6","version":"2023.8.0","r":1,"b":1,"token":"dd471ab1978346bbb991feaa79e6ce5c","si":100}' crossorigin="anonymous"></script>
+    <script src="{{ asset('frontend') }}/js/rocket-loader.min.js" data-cf-settings="3a51f4ea14090e051aa8d211-|49" defer></script>
     <script src="{{ asset('frontend') }}/plugins/sweetalert2/sweetalert2.all.min.js"></script>
     <script src="{{ asset('frontend') }}/plugins/toastr/toastr.min.js"></script>
     <script>
@@ -370,12 +370,27 @@
                 });
             }
 
+            // Get Profile Wise Post Data
             function profilePostData() {
                 $.ajax({
                     type: 'GET',
                     url: '{{ route('profile.post.data') }}',
                     success: function (response) {
                         $('#profilePagePostList').html(response);
+                    },
+                });
+            }
+
+            // Get Timeline Wise Post Data
+            function timelinePostData(timelineId) {
+                var id = timelineId;
+                var url = "{{ route('timeline.post.data', ":id") }}";
+                url = url.replace(':id', id)
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    success: function (response) {
+                        $('#timelinePagePostList').html(response);
                     },
                 });
             }
@@ -417,7 +432,10 @@
                             indexPostData();
                             profilePostData();
                             if(currentRouteName == 'timeline') {
-                                window.location.reload();
+                                var currentURL = window.location.href;
+                                var urlSegments = currentURL.split('/');
+                                var lastSegment = urlSegments[urlSegments.length - 1];
+                                timelinePostData(lastSegment);
                             }
                         }
                     },
@@ -479,7 +497,10 @@
                             indexPostData();
                             profilePostData();
                             if(currentRouteName == 'timeline') {
-                                window.location.reload();
+                                var currentURL = window.location.href;
+                                var urlSegments = currentURL.split('/');
+                                var lastSegment = urlSegments[urlSegments.length - 1];
+                                timelinePostData(lastSegment);
                             }
                         }
                     },
@@ -510,7 +531,10 @@
                                 indexPostData();
                                 profilePostData();
                                 if(currentRouteName == 'timeline') {
-                                    window.location.reload();
+                                    var currentURL = window.location.href;
+                                    var urlSegments = currentURL.split('/');
+                                    var lastSegment = urlSegments[urlSegments.length - 1];
+                                    timelinePostData(lastSegment);
                                 }
                             }
                         });
@@ -547,28 +571,28 @@
                         profilePostData();
 
                         if(currentRouteName == 'timeline') {
-                            window.location.reload();
+                            var currentURL = window.location.href;
+                            var urlSegments = currentURL.split('/');
+                            var lastSegment = urlSegments[urlSegments.length - 1];
+                            timelinePostData(lastSegment);
                         }
                     },
                 });
             });
 
             // Post Comment
-            $('.postCommentForm').on('submit', function (e) {
-                e.preventDefault();
+            $(document).on('click', '.commentBtn', function () {
+                var content = $(this).closest('form').find('textarea[name="content"]').val();
+                var post_id = $(this).closest('form').find('.comment_post_id').val();
                 var currentRouteName = "{{ Route::currentRouteName() }}"
-                var id = $(this).find(".comment_post_id").val();
-                var url = "{{ route('post.comment', ":id") }}";
-                url = url.replace(':id', id)
-                const formData = new FormData(this);
                 $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    dataType: 'json',
+                    type: 'POST',
+                    url: '{{ route('insert.comment') }}',
+                    data: {
+                        _token: $('input[name="_token"]').val(),
+                        content: content,
+                        post_id: post_id
+                    },
                     beforeSend:function(){
                         $(document).find('span.error-text').text('');
                     },
@@ -581,7 +605,10 @@
                             indexPostData();
                             profilePostData();
                             if(currentRouteName == 'timeline') {
-                                window.location.reload();
+                                var currentURL = window.location.href;
+                                var urlSegments = currentURL.split('/');
+                                var lastSegment = urlSegments[urlSegments.length - 1];
+                                timelinePostData(lastSegment);
                             }
                         }
                     },
