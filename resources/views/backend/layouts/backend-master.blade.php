@@ -14,6 +14,8 @@
 	<link href="{{ asset('backend') }}/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
 	<link href="{{ asset('backend') }}/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
 	<link href="{{ asset('backend') }}/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
+
 	<!-- loader-->
 	<link href="{{ asset('backend') }}/css/pace.min.css" rel="stylesheet" />
 	<script src="{{ asset('backend') }}/js/pace.min.js"></script>
@@ -27,6 +29,9 @@
 	<link rel="stylesheet" href="{{ asset('backend') }}/css/dark-theme.css" />
 	<link rel="stylesheet" href="{{ asset('backend') }}/css/semi-dark.css" />
 	<link rel="stylesheet" href="{{ asset('backend') }}/css/header-colors.css" />
+
+    <link href="{{ asset('backend') }}/plugins/toastr/toastr.css" rel="stylesheet">
+    <link href="{{ asset('backend') }}/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet">
 	<title>{{ config('app.name', 'Laravel') }} | @yield('title')</title>
 </head>
 
@@ -258,9 +263,36 @@
 	<script src="{{ asset('backend') }}/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
 	<script src="{{ asset('backend') }}/plugins/datatable/js/jquery.dataTables.min.js"></script>
 	<script src="{{ asset('backend') }}/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{{ asset('backend') }}/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="{{ asset('backend') }}/plugins/toastr/toastr.min.js"></script>
+
     <script>
 		new PerfectScrollbar('.dashboard-top-countries');
 	</script>
+    <script>
+        $(document).ready(function() {
+            @if(Session::has('message'))
+                var type = "{{ Session::get('alert-type', 'info') }}";
+                switch(type){
+                    case 'info':
+                        toastr.info("{{ Session::get('message') }}");
+                        break;
+
+                    case 'warning':
+                        toastr.warning("{{ Session::get('message') }}");
+                        break;
+
+                    case 'success':
+                        toastr.success("{{ Session::get('message') }}");
+                        break;
+
+                    case 'error':
+                        toastr.error("{{ Session::get('message') }}");
+                        break;
+                }
+            @endif
+        });
+    </script>
 	<script src="{{ asset('backend') }}/js/index.js"></script>
 	<!--app JS-->
 	<script src="{{ asset('backend') }}/js/app.js"></script>

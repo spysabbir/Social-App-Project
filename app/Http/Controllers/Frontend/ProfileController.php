@@ -40,7 +40,7 @@ class ProfileController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'username' => 'nullable|string|max:255',
+            'username' => 'nullable|string|max:255|unique:userd,username,'.auth()->user()->id,
             'phone_number' => 'nullable|min:11|max:14',
             'profile_photo' => 'nullable|image|mimes:png,jpg,jpeg,webp',
         ]);

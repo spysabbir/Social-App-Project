@@ -13,7 +13,7 @@
        </div>
        <div class="bg-white rounded-4 shadow-sm profile">
             <div class="d-flex align-items-center px-3 pt-3">
-                <img src="{{ asset('uploads/profile_photo') }}/{{ $user->profile_photo }}" class="img-fluid rounded-circle" alt="profile-img">
+                <img src="{{ asset('uploads/profile_photo') }}/{{ $user->profile_photo }}" class="img-fluid rounded-circle" alt="profile-img" id="profilePhotoPreview">
                 <div class="ms-3">
                     <h6 class="mb-0 d-flex align-items-start text-body fs-6 fw-bold">{{ $user->name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></h6>
                     <p class="text-muted mb-0">{{ $user->username }}</p>

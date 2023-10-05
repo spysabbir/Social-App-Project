@@ -9,6 +9,8 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 
 class BackendController extends Controller
 {
@@ -26,6 +28,39 @@ class BackendController extends Controller
         return view('backend.profile.index', [
             'user' => $request->user(),
         ]);
+    }
+
+    public function profileUpdate(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'nullable|string|max:255|unique:users,username,'.auth()->user()->id,
+            'phone_number' => 'nullable|min:11|max:14',
+            'profile_photo' => 'nullable|image|mimes:png,jpg,jpeg,webp',
+        ]);
+
+        Auth::user()->update($request->except('profile_photo'));
+
+        // Profile Photo Upload
+        if($request->hasFile('profile_photo')){
+            if(Auth::user()->profile_photo != 'default_profile_photo.png'){
+                unlink(base_path("public/uploads/profile_photo/").Auth::user()->profile_photo);
+            }
+            $profile_photo_name = Auth::user()->id."-Profile-Photo".".". $request->file('profile_photo')->getClientOriginalExtension();
+            $upload_link = base_path("public/uploads/profile_photo/").$profile_photo_name;
+            Image::make($request->file('profile_photo'))->resize(120, 120)->save($upload_link);
+            Auth::user()->update([
+                'profile_photo' => $profile_photo_name
+            ]);
+        }
+
+        $notification = array(
+            'message' => 'Profile updated successfully.',
+            'alert-type' => 'success'
+        );
+
+        return back()->with($notification);
+
     }
 
     public function allUser(Request $request)
