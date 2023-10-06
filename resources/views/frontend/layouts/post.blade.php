@@ -72,7 +72,7 @@
                                 <span class="small text-muted">{{ $comment->created_at->format('D d,M-Y h:i"s A') }}</span>
                                 <br>
                                 @if ($comment->user_id == Auth::user()->id)
-                                <a href="{{ route('post.comment.delete', $comment->id) }}" class="text-danger text-decoration-none">
+                                <a href="javascript:void(0)" data-id="{{ $comment->id }}" class="text-danger text-decoration-none commentDeleteBtn">
                                     Delete
                                 </a>
                                 @endif

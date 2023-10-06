@@ -615,6 +615,29 @@
                 });
             });
 
+            // Post Comment Delete
+            $(document).on('click', '.commentDeleteBtn', function () {
+                var currentRouteName = "{{ Route::currentRouteName() }}"
+                var id = $(this).data('id');
+                var url = "{{ route('post.comment.delete', ":id") }}";
+                url = url.replace(':id', id)
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function (response) {
+                        indexPostData();
+                        profilePostData();
+
+                        if(currentRouteName == 'timeline') {
+                            var currentURL = window.location.href;
+                            var urlSegments = currentURL.split('/');
+                            var lastSegment = urlSegments[urlSegments.length - 1];
+                            timelinePostData(lastSegment);
+                        }
+                    },
+                });
+            });
+
             // Post Like List
             $(document).on('click', '.likeListBtn', function () {
                 var id = $(this).data('id');

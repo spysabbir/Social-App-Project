@@ -138,8 +138,6 @@ class PostController extends Controller
     {
         $comment = Comment::findOrFail($id);
         $comment->delete();
-
-        return back();
     }
 
     public function postLikeList($id)
