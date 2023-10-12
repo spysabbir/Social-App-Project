@@ -14,11 +14,19 @@ git clone https://github.com/spysabbir/Social-App-Project.git
  ```
 cd Social-App-Project
 ``` 
-- Now with the help of `composer` download all required packages that are needed to run this laravel project
+- Now with help of `composer` download all required packages those need to run this laravel project
  ```
 composer install
 ``` 
-- Basic setup is done at this point, now we have work on `.env`. The below changes should be done in the .env file
+- Now, we need to copy the .env.example file as .env file for our laravel project. Use below command to copy the file
+ ```
+cp .env.example .env
+``` 
+- Currently our project do not have any key, we have generate it using
+ ```
+php artisan key:generate
+``` 
+- Basic setup is done at this point, now we have work on `.env`. Below changes should be done at .env file
 
 Variable Name | Description
 --- | ---
