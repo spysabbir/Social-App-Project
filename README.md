@@ -1,4 +1,4 @@
-<p align="center"><a href="#" target="_blank"><img src="#" width="400"></a></p>
+<p align="center"><a href="#" target="_blank"><img src="#"></a></p>
 
 ## About This Project
 
@@ -8,11 +8,11 @@ This project is the Social App Project. Built with `Laravel` & various packages 
 
 - First of all, we have to `clone` the project on our local machine using the below command
  ```
-git clone https://github.com/spysabbir/Social-App-Project.git
+git clone https://github.com/spysabbir/laravel-social_media-website.git
 ``` 
 - Now change the command line present working directory (pwd) by
  ```
-cd Social-App-Project
+cd laravel-social_media-website
 ``` 
 - Now with help of `composer` download all required packages those need to run this laravel project
  ```
@@ -48,11 +48,3 @@ For Admin:-
 Email: admin@email.com
 Password: 12345678
 ``` 
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the  [Laravel documentation](https://laravel.com/docs/contributions) .
-
-## License
-
-The Laravel framework is open-sourced software licensed under the  [MIT license](https://opensource.org/licenses/MIT) .
