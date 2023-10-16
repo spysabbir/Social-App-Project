@@ -47,4 +47,8 @@ php artisan serve
 For Admin:- 
 Email: admin@email.com
 Password: 12345678
+
+For User:- 
+Email: user1@email.com
+Password: 12345678
 ``` 
