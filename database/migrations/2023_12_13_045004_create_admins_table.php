@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('username')->unique()->nullable();
@@ -21,9 +21,9 @@ return new class extends Migration
             $table->enum('gender', ['Male', 'Female', 'Other'])->nullable();
             $table->text('address')->nullable();
             $table->string('profile_photo')->default('default_profile_photo.png');
-            $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('last_active')->useCurrent();
             $table->string('password');
+            $table->enum('role', ['Super Admin', 'Admin', 'Editor']);
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->rememberToken();
             $table->timestamps();
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('admins');
     }
 };

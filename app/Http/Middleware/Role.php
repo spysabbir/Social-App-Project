@@ -16,7 +16,7 @@ class Role
      */
     public function handle(Request $request, Closure $next, $roles): Response
     {
-        if (Auth::user()->role !== $roles) {
+        if (!Auth::guard('admin')->check() && Auth::guard('admin')->user()->role !== $roles) {
             return abort(401);
         }
 
