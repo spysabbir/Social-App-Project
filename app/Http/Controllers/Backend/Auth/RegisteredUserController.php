@@ -34,20 +34,20 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'role' => ['required'],
+            // 'role' => ['required'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'password_confirmation' => ['required', Rules\Password::defaults()],
         ]);
 
         $admin = Admin::create([
-            'role' => $request->role,
+            'role' => "Admin",
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        Auth::login($admin);
+        Auth::guard('backend')->login($admin);
 
-        return redirect(RouteServiceProvider::ADMIN_DASHBOARD);
+        return redirect(RouteServiceProvider::BACKEND_DASHBOARD);
     }
 }

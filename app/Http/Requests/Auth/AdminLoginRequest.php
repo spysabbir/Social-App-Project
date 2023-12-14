@@ -45,7 +45,7 @@ class AdminLoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::guard('admin')->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (! Auth::guard('backend')->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -53,8 +53,8 @@ class AdminLoginRequest extends FormRequest
             ]);
         }
 
-        if (Auth::guard('admin')->user()->status != 'Yes') {
-            Auth::logout();
+        if (Auth::guard('backend')->user()->status != 'Active') {
+            Auth::guard('backend')->logout();
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.inactive'),

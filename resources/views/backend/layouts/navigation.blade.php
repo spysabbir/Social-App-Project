@@ -1,6 +1,6 @@
 <ul class="metismenu" id="menu">
     <li>
-        <a href="{{ route('admin.dashboard') }}">
+        <a href="{{ route('backend.dashboard') }}">
             <div class="parent-icon"><i class='bx bx-home'></i>
             </div>
             <div class="menu-title">Dashboard</div>
@@ -8,7 +8,7 @@
     </li>
     <li class="menu-label">Admin Panel</li>
     <li>
-        <a href="{{ route('admin.all.user') }}">
+        <a href="{{ route('backend.all.user') }}">
             <div class="parent-icon">
                 <i class='bx bx-user'></i>
             </div>

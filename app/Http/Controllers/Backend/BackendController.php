@@ -16,7 +16,7 @@ class BackendController extends Controller
 {
     public function dashboard()
     {
-        $allUser = User::where('role', 'User')->count();
+        $allUser = User::count();
         $allPost = Post::count();
         $allComment = Comment::count();
         $allLike = Like::count();

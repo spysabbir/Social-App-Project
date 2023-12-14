@@ -141,19 +141,19 @@
 						<a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<img src="{{ asset('backend') }}/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
 							<div class="user-info ps-3">
-								<p class="user-name mb-0 text-white">{{ Auth::user()->name }}</p>
-								<p class="designattion mb-0">{{ Auth::user()->role }}</p>
+								<p class="user-name mb-0 text-white">{{ Auth::guard('backend')->user()->name }}</p>
+								<p class="designattion mb-0">{{ Auth::guard('backend')->user()->role }}</p>
 							</div>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end">
-							<li><a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="bx bx-user"></i><span>Profile</span></a>
+							<li><a class="dropdown-item" href="{{ route('backend.profile') }}"><i class="bx bx-user"></i><span>Profile</span></a>
 							</li>
 							<li>
 								<div class="dropdown-divider mb-0"></div>
 							</li>
 							<li>
                                 <a href="#" class="dropdown-item" href="javascript:;" onclick="event.preventDefault();  document.getElementById('logout_btn').submit();"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
-                                <form id="logout_btn" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                <form id="logout_btn" action="{{ route('backend.logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
 							</li>
@@ -166,7 +166,7 @@
 		<!--start page wrapper -->
 		<div class="page-wrapper">
 			<div class="page-content">
-             @yield('content')
+                @yield('content')
 			</div>
 		</div>
 		<!--end page wrapper -->

@@ -15,7 +15,7 @@
                     <div class="card-body">
                         <div class="p-4 rounded">
                             <div class="form-body">
-                                <form class="row g-3" method="POST" action="{{ route('admin.register') }}">
+                                <form class="row g-3" method="POST" action="{{ route('backend.register') }}">
                                     @csrf
                                     <div class="col-12">
                                         <label class="form-label">Full Name</label>
@@ -34,7 +34,7 @@
                                     <div class="col-12">
                                         <label for="inputChoosePassword" class="form-label">Password</label>
                                         <div class="input-group" id="show_hide_password">
-                                            <input type="password" class="form-control border-end-0" name="password" placeholder="Enter password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
+                                            <input type="password" class="form-control border-end-0" name="password" value="12345678" placeholder="Enter password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
                                         </div>
                                         @error('password')
                                             <span class="text-danger">{{ $message }}</span>
@@ -43,7 +43,7 @@
                                     <div class="col-12">
                                         <label for="inputChoosePassword" class="form-label">Confirm Password</label>
                                         <div class="input-group" id="show_hide_password">
-                                            <input type="password" class="form-control border-end-0" name="password_confirmation" placeholder="Enter confirm password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
+                                            <input type="password" class="form-control border-end-0" name="password_confirmation" value="12345678" placeholder="Enter confirm password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
                                         </div>
                                         @error('password_confirmation')
                                             <span class="text-danger">{{ $message }}</span>

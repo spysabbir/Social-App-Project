@@ -30,7 +30,7 @@ Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->n
 Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
 Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
 
-Route::middleware(['auth', 'role:User'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)->name('verification.verify')->middleware(['signed', 'throttle:6,1']);
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])->name('verification.send')->middleware('throttle:6,1');

@@ -16,7 +16,7 @@ class FrontendController extends Controller
     {
         $trendingPost = Post::all();
         $followerIds = Follower::where('following_id', auth()->user()->id)->pluck('follower_id');
-        $allUser = User::where('role', 'User')->where('id', '!=', auth()->user()->id)->whereNotIn('id', $followerIds)->inRandomOrder()->get();
+        $allUser = User::where('id', '!=', auth()->user()->id)->whereNotIn('id', $followerIds)->inRandomOrder()->get();
 
         $allPost = Post::whereIn('user_id', $followerIds)->orWhere('user_id', auth()->user()->id)->latest()->get();
 
@@ -80,7 +80,7 @@ class FrontendController extends Controller
     public function timelinePostData($id)
     {
         $allPost = Post::where('user_id', $id)->get();
-        
+
         return view('frontend.layouts.post', compact('allPost'));
     }
 }

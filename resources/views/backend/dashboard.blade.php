@@ -10,7 +10,7 @@
                 <div class="card-body text-center">
                    <p class="mb-1 text-white">Total Users</p>
                    <h3 class="mb-3 text-white">{{ $allUser }}</h3>
-                   <p class="font-13 text-white"><span class="text-success"><i class="lni lni-arrow-up"></i>{{ App\Models\User::where('role', 'User')->whereMonth('created_at', date('m'))->count() }}</span> {{ date('F') }} Month</p>
+                   <p class="font-13 text-white"><span class="text-success"><i class="lni lni-arrow-up"></i>{{ App\Models\User::whereMonth('created_at', date('m'))->count() }}</span> {{ date('F') }} Month</p>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@
                     <div class="d-flex align-items-center">
                         <div>
                             <p class="mb-0">Today User</p>
-                            <h5 class="mb-0">{{ App\Models\User::where('role', 'User')->whereDate('created_at', date('Y-M-D'))->count() }}</h5>
+                            <h5 class="mb-0">{{ App\Models\User::whereDate('created_at', date('Y-M-D'))->count() }}</h5>
                         </div>
                         <div class="widgets-icons bg-light-primary text-primary ms-auto"><i class="bx bxs-cookie"></i></div>
                     </div>

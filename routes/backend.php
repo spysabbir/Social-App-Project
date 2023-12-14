@@ -15,8 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::prefix('admin')->name('admin.')->group(function () {
-
+Route::prefix('backend')->name('backend.')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('register', [RegisteredUserController::class, 'store']);
 
@@ -26,9 +25,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
-    Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.update');
+    Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
 
-    Route::middleware(['auth', 'role:Admin'])->group(function () {
+    Route::middleware(['backend.auth'])->group(function () {
         Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
@@ -41,7 +40,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/all/user', [BackendController::class, 'allUser'])->name('all.user');
         Route::get('/user/status/{id}', [BackendController::class, 'userStatus'])->name('user.status');
         Route::get('/user/view/{id}', [BackendController::class, 'userView'])->name('user.view');
-
     });
-
 });

@@ -20,7 +20,7 @@
                                         <strong>{{ session('status') }}</strong>
                                     </div>
                                 @endif
-                                <form class="row g-3" method="POST" action="{{ route('admin.login') }}">
+                                <form class="row g-3" method="POST" action="{{ route('backend.login') }}">
                                     @csrf
                                     <div class="col-12">
                                         <label class="form-label">Email Address</label>
@@ -32,7 +32,7 @@
                                     <div class="col-12">
                                         <label for="inputChoosePassword" class="form-label">Password</label>
                                         <div class="input-group" id="show_hide_password">
-                                            <input type="password" class="form-control border-end-0" name="password" placeholder="Enter password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
+                                            <input type="password" class="form-control border-end-0" name="password" value="12345678" placeholder="Enter password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
                                         </div>
                                         @error('password')
                                             <span class="text-danger">{{ $message }}</span>
@@ -45,6 +45,7 @@
                                                 <span class="">Remember me</span>
                                             </label>
                                         </div>
+                                        <a class="" href="{{ route('backend.password.request') }}">Forgot your password?</a>
                                     </div>
                                     <div class="col-12">
                                         <div class="d-grid">
