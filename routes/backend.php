@@ -28,17 +28,26 @@ Route::prefix('backend')->name('backend.')->group(function () {
     Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
 
     Route::middleware(['backend.auth'])->group(function () {
-        Route::put('password', [PasswordController::class, 'update'])->name('password.update');
-
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
         Route::get('/dashboard', [BackendController::class, 'dashboard'])->name('dashboard');
+
         Route::get('/profile', [BackendController::class, 'profile'])->name('profile');
-
         Route::patch('/profile', [BackendController::class, 'profileUpdate'])->name('profile.update');
+        Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
-        Route::get('/all/user', [BackendController::class, 'allUser'])->name('all.user');
-        Route::get('/user/status/{id}', [BackendController::class, 'userStatus'])->name('user.status');
-        Route::get('/user/view/{id}', [BackendController::class, 'userView'])->name('user.view');
+        Route::middleware(['role:Super Admin'])->group(function(){
+            Route::get('/all/user', [BackendController::class, 'allUser'])->name('all.user');
+            Route::get('/user/status/{id}', [BackendController::class, 'userStatus'])->name('user.status');
+            Route::get('/user/view/{id}', [BackendController::class, 'userView'])->name('user.view');
+        });
+
+        Route::middleware(['role:Admin'])->group(function(){
+
+        });
+
+        Route::middleware(['role:Editor'])->group(function(){
+            
+        });
     });
 });
