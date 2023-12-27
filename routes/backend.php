@@ -6,6 +6,9 @@ use App\Http\Controllers\Backend\Auth\RegisteredUserController;
 use App\Http\Controllers\Backend\Auth\NewPasswordController;
 use App\Http\Controllers\Backend\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Backend\BackendController;
+use App\Http\Controllers\Backend\SuperAdmin\SuperAdminController;
+use App\Http\Controllers\Backend\Admin\AdminController;
+use App\Http\Controllers\Backend\Editor\EditorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 | Backend Routes
 |--------------------------------------------------------------------------
 */
-
 
 Route::prefix('backend')->name('backend.')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
@@ -37,17 +39,23 @@ Route::prefix('backend')->name('backend.')->group(function () {
         Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
         Route::middleware(['role:Super Admin'])->group(function(){
-            Route::get('/all/user', [BackendController::class, 'allUser'])->name('all.user');
-            Route::get('/user/status/{id}', [BackendController::class, 'userStatus'])->name('user.status');
-            Route::get('/user/view/{id}', [BackendController::class, 'userView'])->name('user.view');
+            Route::post('/store/staff', [SuperAdminController::class, 'storeStaff'])->name('store.staff');
+            Route::get('/all/staff', [SuperAdminController::class, 'allStaff'])->name('all.staff');
+            Route::get('/staff/status/{id}', [SuperAdminController::class, 'staffStatus'])->name('staff.status');
+            Route::get('/staff/view/{id}', [SuperAdminController::class, 'staffView'])->name('staff.view');
         });
 
         Route::middleware(['role:Admin'])->group(function(){
-
+            Route::post('/store/editor', [AdminController::class, 'storeEditor'])->name('store.editor');
+            Route::get('/all/editor', [AdminController::class, 'allEditor'])->name('all.editor');
+            Route::get('/editor/status/{id}', [AdminController::class, 'editorStatus'])->name('editor.status');
+            Route::get('/editor/view/{id}', [AdminController::class, 'editorView'])->name('editor.view');
         });
 
         Route::middleware(['role:Editor'])->group(function(){
-            
+            Route::get('/all/user', [EditorController::class, 'allUser'])->name('all.user');
+            Route::get('/user/status/{id}', [EditorController::class, 'userStatus'])->name('user.status');
+            Route::get('/user/view/{id}', [EditorController::class, 'userView'])->name('user.view');
         });
     });
 });

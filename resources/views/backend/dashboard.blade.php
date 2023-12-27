@@ -95,7 +95,7 @@
     </div>
     <div class="col d-flex">
         <div class="col d-flex">
-            <div class="card radius-10 p-0 w-100 p-3">
+            <div class="card radius-10 w-100 p-3">
                 <div class="card radius-10 shadow-none bg-transparent border">
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-center justify-content-lg-start">

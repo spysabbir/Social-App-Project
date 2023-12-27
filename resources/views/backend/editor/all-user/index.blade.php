@@ -13,7 +13,7 @@
                 <div class="filter">
                     <div class="row mb-3">
                         <div class="col-lg-3">
-                            <select class="form-control filter_data" id="status">
+                            <select class="form-control filter_data" id="filter-status">
                                 <option value="">-- Select Status --</option>
                                 <option value="Active">Active</option>
                                 <option value="Inactive">Inactive</option>
@@ -72,9 +72,9 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('admin.all.user') }}",
+                url: "{{ route('backend.all.user') }}",
                 "data":function(e){
-                    e.status = $('#status').val();
+                    e.status = $('#filter-status').val();
                 },
             },
             columns: [
@@ -95,7 +95,7 @@
         // Change Status Data
         $(document).on('click', '.statusBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.user.status', ":id") }}";
+            var url = "{{ route('backend.user.status', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -110,7 +110,7 @@
         // View Data
         $(document).on('click', '.viewBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('admin.user.view', ":id") }}";
+            var url = "{{ route('backend.user.view', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,

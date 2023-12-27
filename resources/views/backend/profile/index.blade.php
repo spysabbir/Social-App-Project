@@ -50,7 +50,7 @@
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">
-                        <form method="post" action="{{ route('admin.profile.update') }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('backend.profile.update') }}" enctype="multipart/form-data">
                             @csrf
                             @method('patch')
 
@@ -119,7 +119,6 @@
                                     <h6 class="mb-0">Gender</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    <label for="gender" class="form-label">Gender</label>
                                     <select name="gender" class="form-select">
                                         <option value="">Select Gender</option>
                                         <option value="Male" @selected(old('gender', $user->gender) == "Male")>Male</option>
