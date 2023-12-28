@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2023 at 10:12 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Dec 28, 2023 at 01:20 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,8 +18,42 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `social_app_project`
+-- Database: `social_media-website`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admins`
+--
+
+CREATE TABLE `admins` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone_number` varchar(255) DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `gender` enum('Male','Female','Other') DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `profile_photo` varchar(255) NOT NULL DEFAULT 'default_profile_photo.png',
+  `last_active` timestamp NOT NULL DEFAULT current_timestamp(),
+  `password` varchar(255) NOT NULL,
+  `role` enum('Super Admin','Admin','Editor') NOT NULL,
+  `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `admins`
+--
+
+INSERT INTO `admins` (`id`, `name`, `username`, `email`, `phone_number`, `date_of_birth`, `gender`, `address`, `profile_photo`, `last_active`, `password`, `role`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Super Admin', 'superadmin', 'superadmin@email.com', NULL, NULL, NULL, NULL, 'default_profile_photo.png', '2023-12-28 12:20:05', '$2y$10$gsEWABV/y0rYXcLc8xMsTurJSKggMVnJ9CG0fDxI8lAM5rNBeex5e', 'Super Admin', 'Active', NULL, '2023-12-28 06:20:05', NULL),
+(2, 'Admin', 'admin', 'admin@email.com', NULL, NULL, NULL, NULL, 'default_profile_photo.png', '2023-12-28 12:20:05', '$2y$10$8fAyDunncN05VY.IQefaY.YxBA883A1u1ieMcMyXLEEEBGthnOhuy', 'Admin', 'Active', NULL, '2023-12-28 06:20:05', NULL),
+(3, 'Editor', 'editor', 'editor@email.com', NULL, NULL, NULL, NULL, 'default_profile_photo.png', '2023-12-28 12:20:05', '$2y$10$FKO79DGFyX5snydoo9kyAOus4.FYFt86Yif6DFc4sjhUaJN10CtQS', 'Editor', 'Active', NULL, '2023-12-28 06:20:05', NULL);
 
 -- --------------------------------------------------------
 
@@ -35,14 +69,6 @@ CREATE TABLE `comments` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `comments`
---
-
-INSERT INTO `comments` (`id`, `user_id`, `post_id`, `content`, `created_at`, `updated_at`) VALUES
-(3, 3, 4, 'Done', '2023-10-03 12:27:04', '2023-10-03 12:27:04'),
-(4, 3, 5, 'Bad', '2023-10-03 12:27:17', '2023-10-03 12:27:17');
 
 -- --------------------------------------------------------
 
@@ -74,18 +100,6 @@ CREATE TABLE `followers` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `followers`
---
-
-INSERT INTO `followers` (`id`, `follower_id`, `following_id`, `created_at`, `updated_at`) VALUES
-(21, 3, 4, '2023-10-03 11:29:29', NULL),
-(23, 2, 4, '2023-10-03 11:31:03', NULL),
-(25, 3, 2, '2023-10-03 12:01:45', NULL),
-(28, 4, 2, '2023-10-03 12:06:58', NULL),
-(30, 4, 3, '2023-10-03 12:39:02', NULL),
-(31, 2, 3, '2023-10-03 12:43:23', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -99,14 +113,6 @@ CREATE TABLE `likes` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `likes`
---
-
-INSERT INTO `likes` (`id`, `user_id`, `post_id`, `created_at`, `updated_at`) VALUES
-(6, 3, 5, '2023-10-03 12:27:12', NULL),
-(9, 3, 4, '2023-10-03 13:11:39', NULL);
 
 -- --------------------------------------------------------
 
@@ -132,7 +138,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (5, '2023_10_02_063400_create_posts_table', 1),
 (6, '2023_10_02_063518_create_comments_table', 1),
 (7, '2023_10_02_063533_create_followers_table', 1),
-(8, '2023_10_02_063548_create_likes_table', 1);
+(8, '2023_10_02_063548_create_likes_table', 1),
+(9, '2023_12_13_045004_create_admins_table', 1);
 
 -- --------------------------------------------------------
 
@@ -173,22 +180,13 @@ CREATE TABLE `personal_access_tokens` (
 
 CREATE TABLE `posts` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `content` longtext NOT NULL,
-  `image_path` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `post_content` longtext NOT NULL,
+  `post_photo` varchar(255) DEFAULT NULL,
+  `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `posts`
---
-
-INSERT INTO `posts` (`id`, `user_id`, `content`, `image_path`, `created_at`, `updated_at`) VALUES
-(4, 2, 'Post 1', 'Post-Photo-9i5iRnLgyV.png', '2023-10-03 12:24:33', NULL),
-(5, 2, 'Post 2', 'Post-Photo-O3R7We57d3.png', '2023-10-03 12:24:59', NULL),
-(6, 3, 'Post 3', 'Post-Photo-GhuFdvGy44.png', '2023-10-03 12:27:59', NULL),
-(7, 3, 'Post 4', 'Post-Photo-OhgUH0YVZ8.png', '2023-10-03 12:28:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -207,8 +205,8 @@ CREATE TABLE `users` (
   `address` text DEFAULT NULL,
   `profile_photo` varchar(255) NOT NULL DEFAULT 'default_profile_photo.png',
   `email_verified_at` timestamp NULL DEFAULT NULL,
+  `last_active` timestamp NOT NULL DEFAULT current_timestamp(),
   `password` varchar(255) NOT NULL,
-  `role` enum('Admin','User') NOT NULL DEFAULT 'User',
   `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -216,18 +214,16 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `name`, `username`, `email`, `phone_number`, `date_of_birth`, `gender`, `address`, `profile_photo`, `email_verified_at`, `password`, `role`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', NULL, 'admin@email.com', NULL, NULL, NULL, NULL, 'default_profile_photo.png', NULL, '$2y$10$Kfei4qnAS496Pzz0Zcvl5uhCRY4ocRHMRAx8YMSwaxbkkKv/yivvG', 'Admin', 'Active', NULL, '2023-10-03 08:31:51', NULL),
-(2, 'Sabbir1', NULL, 'sabbir1@gmail.com', NULL, '2023-10-03', 'Male', NULL, 'default_profile_photo.png', '2023-10-03 14:40:50', '$2y$10$m8r84ZHDjsPz6g8MO8DXT.Ey0YBxzbzacrdRjaODYpHxxNBAPP39a', 'User', 'Active', NULL, '2023-10-03 08:40:21', '2023-10-03 08:40:21'),
-(3, 'Sabbir2', NULL, 'sabbir2@gmail.com', NULL, '2023-11-03', 'Male', NULL, 'default_profile_photo.png', '2023-10-03 16:45:16', '$2y$10$dnor6NBfK1t.qKyYIhMlUOwup8ljAhD8cG/u0rd8bPwldOyEUJ1/O', 'User', 'Active', NULL, '2023-10-03 10:45:03', '2023-10-03 10:45:03'),
-(4, 'Sabbir3', NULL, 'sabbir3@gmail.com', NULL, '2023-10-24', 'Male', NULL, 'default_profile_photo.png', '2023-10-03 17:00:07', '$2y$10$NPuHDuwhQZmjIRBbQC2/reZTTXdcLjNH/HKje.zkoG177Nb/6cWiW', 'User', 'Active', NULL, '2023-10-03 10:59:57', '2023-10-03 10:59:57');
-
---
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `admins`
+--
+ALTER TABLE `admins`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `admins_email_unique` (`email`),
+  ADD UNIQUE KEY `admins_username_unique` (`username`);
 
 --
 -- Indexes for table `comments`
@@ -284,8 +280,7 @@ ALTER TABLE `personal_access_tokens`
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `posts_user_id_foreign` (`user_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -300,10 +295,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `admins`
+--
+ALTER TABLE `admins`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -315,19 +316,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `followers`
 --
 ALTER TABLE `followers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -339,13 +340,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -371,12 +372,6 @@ ALTER TABLE `followers`
 ALTER TABLE `likes`
   ADD CONSTRAINT `likes_post_id_foreign` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `likes_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `posts`
---
-ALTER TABLE `posts`
-  ADD CONSTRAINT `posts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

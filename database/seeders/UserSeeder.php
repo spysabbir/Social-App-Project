@@ -15,14 +15,31 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         DB::table('admins')->insert([
-            // Admin
+            // Super Admin
             [
                 'name' => 'Super Admin',
+                'username' => 'superadmin',
                 'email' => 'superadmin@email.com',
                 'password' => Hash::make('12345678'),
                 'role' => 'Super Admin',
-                'profile_photo' => 'default_profile_photo.png',
-                'status' => 'Active',
+                'created_at' => Carbon::now(),
+            ],
+            // Admin
+            [
+                'name' => 'Admin',
+                'username' => 'admin',
+                'email' => 'admin@email.com',
+                'password' => Hash::make('12345678'),
+                'role' => 'Admin',
+                'created_at' => Carbon::now(),
+            ],
+            // Editor
+            [
+                'name' => 'Editor',
+                'username' => 'editor',
+                'email' => 'editor@email.com',
+                'password' => Hash::make('12345678'),
+                'role' => 'Editor',
                 'created_at' => Carbon::now(),
             ],
         ]);

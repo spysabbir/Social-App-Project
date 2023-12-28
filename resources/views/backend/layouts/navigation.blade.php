@@ -15,6 +15,7 @@
             <div class="menu-title">All Staff</div>
         </a>
     </li>
+    <li class="menu-label">Admin Panel</li>
     <li>
         <a href="{{ route('backend.all.editor') }}">
             <div class="parent-icon">
@@ -23,12 +24,21 @@
             <div class="menu-title">All Editor</div>
         </a>
     </li>
+    <li class="menu-label">Editor Panel</li>
     <li>
         <a href="{{ route('backend.all.user') }}">
             <div class="parent-icon">
                 <i class='bx bx-user'></i>
             </div>
             <div class="menu-title">All User</div>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('backend.all.post') }}">
+            <div class="parent-icon">
+                <i class='bx bx-user'></i>
+            </div>
+            <div class="menu-title">All Post</div>
         </a>
     </li>
     {{-- <li>

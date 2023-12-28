@@ -9,8 +9,17 @@
             <th>{{ $staff->name }}</th>
         </tr>
         <tr>
-            <th>Created At</th>
-            <th><span class="badge bg-success">{{ $staff->created_at->format('D d-M,Y h:m:s A') }}</span></th>
+            <th>Username </th>
+            <th>{{ $staff->username  }}</th>
+        </tr>
+        <tr>
+            <th>Role</th>
+            <th><span class="badge bg-success">{{ $staff->role }}</span></th>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <th><span class="badge bg-info">{{ $staff->status }}</span></th>
+        </tr>
     </thead>
     <tbody>
         <tr>
@@ -27,11 +36,19 @@
         </tr>
         <tr>
             <td>Date of Birth</td>
-            <td>{{ $staff->date_of_birth }}</td>
+            <td>{{ $staff->date_of_birth ? date('D d-F-Y', strtotime($staff->date_of_birth)) : ''}}</td>
         </tr>
         <tr>
             <td>Address</td>
             <td>{{ $staff->address }}</td>
+        </tr>
+        <tr>
+            <td>Created At</td>
+            <td><span class="badge bg-info">{{ $staff->created_at->format('D d-F,Y h:m:s A') }}</span></td>
+        </tr>
+        <tr>
+            <td>Last Active</td>
+            <td><span class="badge bg-primary">{{ date('D d-F,Y h:m:s A', strtotime($staff->last_active)) }}</span></td>
         </tr>
     </tbody>
 </table>

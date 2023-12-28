@@ -9,8 +9,13 @@
             <th>{{ $editor->name }}</th>
         </tr>
         <tr>
-            <th>Created At</th>
-            <th><span class="badge bg-success">{{ $editor->created_at->format('D d-M,Y h:m:s A') }}</span></th>
+            <th>Username </th>
+            <th>{{ $editor->username  }}</th>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <th><span class="badge bg-info">{{ $editor->status }}</span></th>
+        </tr>
     </thead>
     <tbody>
         <tr>
@@ -27,11 +32,19 @@
         </tr>
         <tr>
             <td>Date of Birth</td>
-            <td>{{ $editor->date_of_birth }}</td>
+            <td>{{ $editor->date_of_birth ? date('D d-F-Y', strtotime($editor->date_of_birth)) : ''}}</td>
         </tr>
         <tr>
             <td>Address</td>
             <td>{{ $editor->address }}</td>
+        </tr>
+        <tr>
+            <td>Created At</td>
+            <td><span class="badge bg-info">{{ $editor->created_at->format('D d-F,Y h:m:s A') }}</span></td>
+        </tr>
+        <tr>
+            <td>Last Active</td>
+            <td><span class="badge bg-primary">{{ date('D d-F,Y h:m:s A', strtotime($editor->last_active)) }}</span></td>
         </tr>
     </tbody>
 </table>

@@ -1,13 +1,13 @@
 @extends('backend.layouts.backend-master')
 
-@section('title', 'All User')
+@section('title', 'All Post')
 
 @section('content')
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">User Panel</h4>
+                <h4 class="card-title">Post Panel</h4>
             </div>
             <div class="card-body">
                 <div class="filter">
@@ -26,10 +26,9 @@
                         <thead>
                             <tr>
                                 <th>Sl No</th>
-                                <th>Name</th>
-                                <th>Email</th>
+                                <th>Post User</th>
                                 <th>Status</th>
-                                <th>Last Active</th>
+                                <th>Created At</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -72,7 +71,7 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('backend.all.user') }}",
+                url: "{{ route('backend.all.post') }}",
                 "data":function(e){
                     e.status = $('#filter-status').val();
                 },
@@ -80,9 +79,8 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'name', name: 'name' },
-                { data: 'email', name: 'email' },
                 { data: 'status', name: 'status' },
-                { data: 'last_active', name: 'last_active' },
+                { data: 'created_at', name: 'created_at' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });
@@ -95,28 +93,13 @@
         // Change Status Data
         $(document).on('click', '.statusBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('backend.user.status', ":id") }}";
+            var url = "{{ route('backend.post.status', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
                 type: "GET",
                 success: function (response) {
                     $('#allDataTable').DataTable().ajax.reload();
-                },
-            });
-        });
-
-
-        // View Data
-        $(document).on('click', '.viewBtn', function () {
-            var id = $(this).data('id');
-            var url = "{{ route('backend.user.view', ":id") }}";
-            url = url.replace(':id', id)
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function (response) {
-                    $('#modalBody').html(response);
                 },
             });
         });

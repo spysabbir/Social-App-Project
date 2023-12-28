@@ -29,7 +29,7 @@
                             <div class="mt-3">
                                 <h4>{{ $user->name }}</h4>
                                 <p class="text-secondary mb-1">{{ $user->email }}</p>
-                                <p class="text-muted font-size-sm">{{ $user->address }}</p>
+                                <p class="badge bg-primary font-size-sm">{{ date('D d-F-Y h:m:s A', strtotime($user->last_active)) }}</p>
                             </div>
                         </div>
                         <hr class="my-4" />
@@ -38,10 +38,13 @@
                                 <strong>Phone Number: </strong>{{ $user->phone_number }}
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                <strong>Date of Birth: </strong>{{ $user->date_of_birth }}
+                                <strong>Date of Birth: </strong>{{ date('D d-F-Y', strtotime($user->date_of_birth)) }}
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                 <strong>Gender: </strong> {{ $user->gender }}
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <strong>Address: </strong> {{ $user->address }}
                             </li>
                         </ul>
                     </div>

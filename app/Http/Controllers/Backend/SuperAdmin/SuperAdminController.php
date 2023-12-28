@@ -78,6 +78,6 @@ class SuperAdminController extends Controller
     public function staffView($id)
     {
         $staff = Admin::where('id', $id)->first();
-        return view('backend.super-admin.staff-user.view', compact('staff'));
+        return view('backend.super-admin.all-staff.view', compact('staff'));
     }
 }

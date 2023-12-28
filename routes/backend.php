@@ -18,8 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('backend')->name('backend.')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('register', [RegisteredUserController::class, 'store'])->name('register');
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
@@ -39,23 +38,26 @@ Route::prefix('backend')->name('backend.')->group(function () {
         Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
         Route::middleware(['role:Super Admin'])->group(function(){
-            Route::post('/store/staff', [SuperAdminController::class, 'storeStaff'])->name('store.staff');
             Route::get('/all/staff', [SuperAdminController::class, 'allStaff'])->name('all.staff');
             Route::get('/staff/status/{id}', [SuperAdminController::class, 'staffStatus'])->name('staff.status');
             Route::get('/staff/view/{id}', [SuperAdminController::class, 'staffView'])->name('staff.view');
         });
 
-        Route::middleware(['role:Admin'])->group(function(){
-            Route::post('/store/editor', [AdminController::class, 'storeEditor'])->name('store.editor');
+        // Route::middleware(['role:Admin'])->group(function(){
             Route::get('/all/editor', [AdminController::class, 'allEditor'])->name('all.editor');
             Route::get('/editor/status/{id}', [AdminController::class, 'editorStatus'])->name('editor.status');
             Route::get('/editor/view/{id}', [AdminController::class, 'editorView'])->name('editor.view');
-        });
+        // });
 
-        Route::middleware(['role:Editor'])->group(function(){
+        // Route::middleware(['role:Editor'])->group(function(){
             Route::get('/all/user', [EditorController::class, 'allUser'])->name('all.user');
             Route::get('/user/status/{id}', [EditorController::class, 'userStatus'])->name('user.status');
             Route::get('/user/view/{id}', [EditorController::class, 'userView'])->name('user.view');
-        });
+
+            Route::get('/all/post', [EditorController::class, 'allPost'])->name('all.post');
+            Route::get('/post/status/{id}', [EditorController::class, 'postStatus'])->name('post.status');
+            Route::get('/post/view/{id}', [EditorController::class, 'postView'])->name('post.view');
+
+        // });
     });
 });

@@ -9,8 +9,21 @@
             <th>{{ $user->name }}</th>
         </tr>
         <tr>
-            <th>Created At</th>
-            <th><span class="badge bg-success">{{ $user->created_at->format('D d-M,Y h:m:s A') }}</span></th>
+            <th>Username </th>
+            <th>{{ $user->username  }}</th>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <th><span class="badge bg-info">{{ $user->status }}</span></th>
+        </tr>
+        <tr>
+            <th>Count</th>
+            <th>
+                <span class="badge bg-dark">Follower: {{ $followerCount }}</span>
+                <span class="badge bg-dark">Following: {{ $followingCount }}</span>
+                <span class="badge bg-dark">Post: {{ $postCount }}</span>
+            </th>
+        </tr>
     </thead>
     <tbody>
         <tr>
@@ -27,11 +40,19 @@
         </tr>
         <tr>
             <td>Date of Birth</td>
-            <td>{{ $user->date_of_birth }}</td>
+            <td>{{ $user->date_of_birth ? date('D d-F-Y', strtotime($user->date_of_birth)) : ''}}</td>
         </tr>
         <tr>
             <td>Address</td>
             <td>{{ $user->address }}</td>
+        </tr>
+        <tr>
+            <td>Created At</td>
+            <td><span class="badge bg-info">{{ $user->created_at->format('D d-F,Y h:m:s A') }}</span></td>
+        </tr>
+        <tr>
+            <td>Last Active</td>
+            <td><span class="badge bg-primary">{{ date('D d-F,Y h:m:s A', strtotime($user->last_active)) }}</span></td>
         </tr>
     </tbody>
 </table>
