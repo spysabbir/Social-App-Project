@@ -23,16 +23,18 @@
     <div class="py-4">
         <div class="container">
             <div class="row position-relative">
-                <!-- Content Start -->
-                @yield('content')
-                <!-- Content End -->
-
                 <!-- Sidebar Left Start -->
-                <aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-6 col-12">
+                <aside class="col-lg-6 col-sm-12">
                     <div class="ps-0 m-none fix-sidebar">
                         <div class="side-trend lg-none">
-                            <div class="sticky-sidebar2 mb-3">
+                            <div class="sticky-sidebar2 mt-3">
+                                <div class="main-content mt-5">
+                                    <a href="{{ route('index') }}" class="text-decoration-none">
+                                        <h5 class="text-center text-info">{{ config('app.name', 'Laravel') }}</h5>
+                                    </a>
 
+                                    <img src="{{ asset('frontend') }}/img/auth.png" class="img-fluid w-100 my-5" alt="{{ config('app.name', 'Laravel') }}">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -40,11 +42,13 @@
                 <!-- Sidebar Left End -->
 
                 <!-- Sidebar Right Start -->
-                <aside class="col col-xl-3 order-xl-3 col-lg-6 order-lg-3 col-md-6 col-sm-6 col-12">
+                <aside class="col-lg-6 col-sm-12">
                     <div class="ps-0 m-none fix-sidebar">
                         <div class="side-trend lg-none">
-                            <div class="sticky-sidebar2 mb-3">
-
+                            <div class="sticky-sidebar2 mt-3">
+                                <!-- Content Start -->
+                                @yield('content')
+                                <!-- Content End -->
                             </div>
                         </div>
                     </div>

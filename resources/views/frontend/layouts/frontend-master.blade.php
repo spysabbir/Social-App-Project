@@ -122,11 +122,11 @@
                                     <h6 class="fw-bold text-body p-3 mb-0 border-bottom">Follower</h6>
                                     @forelse ($allFollower->take(5) as $follower)
                                     <div class="p-3 border-bottom d-flex text-dark text-decoration-none account-item">
-                                        <a href="{{ route('timeline', $follower->relationToFollower->id) }}">
+                                        <a href="{{ route('timeline', $follower->relationToFollower->username ) }}">
                                             <img src="{{ asset('uploads/profile_photo') }}/{{ $follower->relationToFollower->profile_photo }}" class="img-fluid rounded-circle me-3" alt="profile-img">
                                         </a>
                                         <div>
-                                            <p class="fw-bold mb-0 pe-3 d-flex align-items-center"><a class="text-decoration-none text-dark" href="{{ route('timeline', $follower->relationToFollower->id) }}">{{ $follower->relationToFollower->name }}</a><span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
+                                            <p class="fw-bold mb-0 pe-3 d-flex align-items-center"><a class="text-decoration-none text-dark" href="{{ route('timeline', $follower->relationToFollower->username ) }}">{{ $follower->relationToFollower->name }}</a><span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
                                             <div class="text-muted fw-light">
                                             <p class="mb-1 small">{{ $follower->relationToFollower->user_name }}</p>
                                             </div>
@@ -155,11 +155,11 @@
                                     <h6 class="fw-bold text-body p-3 mb-0 border-bottom">Following</h6>
                                     @forelse ($allFollowing as $following)
                                     <div class="p-3 border-bottom d-flex text-dark text-decoration-none account-item">
-                                        <a href="{{ route('timeline', $following->relationTofollowing->id) }}">
+                                        <a href="{{ route('timeline', $following->relationTofollowing->username ) }}">
                                             <img src="{{ asset('uploads/profile_photo') }}/{{ $following->relationTofollowing->profile_photo }}" class="img-fluid rounded-circle me-3" alt="profile-img">
                                         </a>
                                         <div>
-                                            <p class="fw-bold mb-0 pe-3 d-flex align-items-center"><a class="text-decoration-none text-dark" href="{{ route('timeline', $following->relationTofollowing->id) }}">{{ $following->relationTofollowing->name }}</a><span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
+                                            <p class="fw-bold mb-0 pe-3 d-flex align-items-center"><a class="text-decoration-none text-dark" href="{{ route('timeline', $following->relationTofollowing->username ) }}">{{ $following->relationTofollowing->name }}</a><span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
                                             <div class="text-muted fw-light">
                                             <p class="mb-1 small">{{ $following->relationTofollowing->username }}</p>
                                             </div>
@@ -223,19 +223,19 @@
                 @csrf
                 <div class="modal-body p-0 mb-3">
                     <div class="form-floating">
-                        <textarea class="form-control rounded-5 border-0 shadow-sm" name="content" placeholder="Enter content" id="floatingTextarea2" style="height: 100px"></textarea>
+                        <textarea class="form-control rounded-5 border-0 shadow-sm" name="post_content" placeholder="Enter post content" id="floatingTextarea2" style="height: 100px"></textarea>
                         <label for="floatingTextarea2" class="h6 text-muted mb-0">What's on your mind...</label>
-                        <span class="text-danger error-text content_error"></span>
+                        <span class="text-danger error-text post_content_error"></span>
                     </div>
                     <div class="form-floating mt-2">
                         <img src="" alt="postImage" id="postImagePreview" width="200" height="180">
                         <br>
-                        <span class="text-danger error-text image_path_error"></span>
+                        <span class="text-danger error-text post_photo_error"></span>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-start px-1 py-1 bg-white shadow-sm rounded-5">
                     <div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
-                        <input type="file" class="form-control" name="image_path" id="postImage" accept=".jpeg, .jpg, .png, .webp">
+                        <input type="file" class="form-control" name="post_photo" id="postImage" accept=".jpeg, .jpg, .png">
                     </div>
                     <div class="ms-auto m-0">
                         <button type="submit" class="btn btn-primary rounded-5 fw-bold px-3 py-2 fs-6 mb-0 d-flex align-items-center"><span class="material-icons me-2 md-16">send</span>Post</button>
@@ -262,19 +262,19 @@
                 <input type="hidden" id="post_id">
                 <div class="modal-body p-0 mb-3">
                     <div class="form-floating">
-                        <textarea class="form-control rounded-5 border-0 shadow-sm post_content" name="content" placeholder="Enter content" id="floatingTextarea2" style="height: 100px"></textarea>
+                        <textarea class="form-control rounded-5 border-0 shadow-sm post_content" name="post_content" placeholder="Enter post content" id="floatingTextarea2" style="height: 100px"></textarea>
                         <label for="floatingTextarea2" class="h6 text-muted mb-0">What's on your mind...</label>
-                        <span class="text-danger error-text update_content_error"></span>
+                        <span class="text-danger error-text update_post_content_error"></span>
                     </div>
                     <div class="form-floating mt-2">
                         <img src="" alt="postImage" id="updateImagePreview" width="200" height="180">
                         <br>
-                        <span class="text-danger error-text update_image_path_error"></span>
+                        <span class="text-danger error-text update_post_photo_error"></span>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-start px-1 py-1 bg-white shadow-sm rounded-5">
                     <div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
-                        <input type="file" class="form-control" name="image_path" id="updateImage" accept=".jpeg, .jpg, .png, .webp">
+                        <input type="file" class="form-control" name="post_photo" id="updateImage" accept=".jpeg, .jpg, .png">
                     </div>
                     <div class="ms-auto m-0">
                         <button type="submit" class="btn btn-primary rounded-5 fw-bold px-3 py-2 fs-6 mb-0 d-flex align-items-center"><span class="material-icons me-2 md-16">send</span>Post</button>
@@ -382,10 +382,10 @@
             }
 
             // Get Timeline Wise Post Data
-            function timelinePostData(timelineId) {
-                var id = timelineId;
-                var url = "{{ route('timeline.post.data', ":id") }}";
-                url = url.replace(':id', id)
+            function timelinePostData(timelineUsername ) {
+                var username  = timelineUsername;
+                var url = "{{ route('timeline.post.data', ":username ") }}";
+                url = url.replace(':username ', username )
                 $.ajax({
                     type: 'GET',
                     url: url,
@@ -452,8 +452,12 @@
                     type: "GET",
                     success: function (response) {
                         $('#post_id').val(response.id);
-                        $('.post_content').val(response.content);
-                        $('#updateImagePreview').attr('src', "{{ asset('uploads/post_photo') }}"+"/"+ response.image_path);
+                        $('.post_content').val(response.post_content);
+                        if (response.post_photo) {
+                            $('#updateImagePreview').attr('src', "{{ asset('uploads/post_photo') }}"+"/"+ response.post_photo);
+                        } else {
+                            $('#updateImagePreview').addClass('d-none');
+                        }
                     },
                 });
             });
@@ -582,7 +586,7 @@
 
             // Post Comment
             $(document).on('click', '.commentBtn', function () {
-                var content = $(this).closest('form').find('textarea[name="content"]').val();
+                var comment_content = $(this).closest('form').find('textarea[name="comment_content"]').val();
                 var post_id = $(this).closest('form').find('.comment_post_id').val();
                 var currentRouteName = "{{ Route::currentRouteName() }}"
                 $.ajax({
@@ -590,7 +594,7 @@
                     url: '{{ route('insert.comment') }}',
                     data: {
                         _token: $('input[name="_token"]').val(),
-                        content: content,
+                        comment_content: comment_content,
                         post_id: post_id
                     },
                     beforeSend:function(){

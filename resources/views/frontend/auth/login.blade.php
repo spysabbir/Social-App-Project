@@ -3,14 +3,13 @@
 @section('title', 'Login')
 
 @section('content')
-<div class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
-   <div class="main-content mb-5">
+    <div class="main-content mt-5">
         <div class="card m-5">
-            <div class="card-header p-3 bg-success text-center text-white">
-                <h5 class="text-center">Login</h5>
-                <a class="text-white" href="{{ route('register') }}">Don't have an account? Please create an account.</a>
+            <div class="card-header p-3 bg-dark text-center text-white">
+                <img src="{{ asset('frontend') }}/img/logo.png" class="img-fluid logo-mobile" alt="brand-logo">
+                <h5 class="text-center mt-2">Login Now</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body p-5">
 
                 @if (session('status'))
                     <div class="alert alert-primary">
@@ -44,8 +43,10 @@
                 </form>
 
                 <a class="" href="{{ route('password.request') }}">Forgot your password?</a>
+                <div class="m-3 text-center">
+                    <a class="btn btn-info" href="{{ route('register') }}">Don't have an account? Please create an account.</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endsection

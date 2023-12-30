@@ -14,7 +14,7 @@
         <!-- People Start -->
         <div class="bg-white rounded-4 overflow-hidden mb-4 shadow-sm">
             @forelse ($allFollower as $follower)
-            <a href="{{ route('timeline', $follower->relationToFollower->id) }}" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
+            <a href="{{ route('timeline', $follower->relationToFollower->username) }}" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
                 <img src="{{ asset('uploads/profile_photo') }}/{{ $follower->relationToFollower->profile_photo }}" class="img-fluid rounded-circle me-3" alt="profile-img">
                 <div>
                     <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{ $follower->relationToFollower->name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
@@ -29,7 +29,7 @@
                     <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                         <input type="checkbox" class="btn-check followerStatusBtn" id="btncheck{{ $follower->relationToFollower->id }}" data-id="{{ $follower->relationToFollower->id }}" {{ $followingStatus ? 'checked' : '' }}>
                         <label class="btn btn-outline-primary btn-sm px-3 rounded-pill" for="btncheck{{ $follower->relationToFollower->id }}">
-                            <label class="btn btn-outline-primary text-white btn-sm px-3 rounded-pill" for="btncheck{{ $follower->relationToFollower->id }}">{{ $followingStatus ? 'Following' : 'Follow' }}</label>
+                            <label class="btn btn-outline-primary btn-sm px-3 rounded-pill {{ $followingStatus ? 'text-white' : ''}}" for="btncheck{{ $follower->relationToFollower->id }}">{{ $followingStatus ? 'Following' : 'Follow' }}</label>
                         </label>
                     </div>
                 </div>

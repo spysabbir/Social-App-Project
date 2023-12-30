@@ -14,7 +14,7 @@
         <!-- People Start -->
         <div class="bg-white rounded-4 overflow-hidden mb-4 shadow-sm">
             @forelse ($allFollowing as $following)
-            <a href="{{ route('timeline', $following->relationTofollowing->id) }}" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
+            <a href="{{ route('timeline', $following->relationTofollowing->username) }}" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
                 <img src="{{ asset('uploads/profile_photo') }}/{{ $following->relationTofollowing->profile_photo }}" class="img-fluid rounded-circle me-3" alt="profile-img">
                 <div>
                     <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{ $following->relationTofollowing->name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>

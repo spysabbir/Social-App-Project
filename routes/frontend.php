@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [FrontendController::class, 'index'])->name('index');
         Route::get('/index-post-data', [FrontendController::class, 'indexPostData'])->name('index.post.data');
 
-        Route::get('/timeline-post-data/{id}', [FrontendController::class, 'timelinePostData'])->name('timeline.post.data');
+        Route::get('/timeline-post-data/{username}', [FrontendController::class, 'timelinePostData'])->name('timeline.post.data');
 
         Route::get('/follower', [FrontendController::class, 'follower'])->name('follower');
         Route::get('/following', [FrontendController::class, 'following'])->name('following');

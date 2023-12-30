@@ -31,7 +31,7 @@ class FrontendController extends Controller
         $followerIds = Follower::where('following_id', auth()->user()->id)->pluck('follower_id');
         $allPost = Post::whereIn('user_id', $followerIds)->orWhere('user_id', auth()->user()->id)->latest()->get();
 
-        return view('frontend.layouts.post', compact('allPost'));
+        return view('frontend.post.index', compact('allPost'));
     }
 
     public function follower()
@@ -61,26 +61,28 @@ class FrontendController extends Controller
         }
     }
 
-    public function timeline ($id)
+    public function timeline ($username)
     {
-        $user = User::findOrFail($id);
-        $follower_count = Follower::where('follower_id', $id)->count();
-        $following_count = Follower::where('following_id', $id)->count();
+        $user = User::where('username', $username)->first();
+        $follower_count = Follower::where('follower_id', $user->id)->count();
+        $following_count = Follower::where('following_id', $user->id)->count();
 
-        $allPost = Post::where('user_id', $id)->get();
+        $allPost = Post::where('user_id', $user->id)->get();
 
         $allFollower = Follower::where('follower_id', auth()->user()->id)->get();
         $allFollowing = Follower::where('following_id', auth()->user()->id)->get();
 
-        $followStatus = Follower::where('follower_id', $id)->where('following_id', auth()->user()->id)->first();
+        $followStatus = Follower::where('follower_id', $user->id)->where('following_id', auth()->user()->id)->first();
 
         return view('frontend.profile.timeline', compact('user', 'follower_count', 'following_count', 'allPost', 'allFollower', 'allFollowing', 'followStatus'));
     }
 
-    public function timelinePostData($id)
+    public function timelinePostData($username)
     {
-        $allPost = Post::where('user_id', $id)->get();
+        $user = User::where('username', $username)->first();
 
-        return view('frontend.layouts.post', compact('allPost'));
+        $allPost = Post::where('user_id', $user->id)->get();
+
+        return view('frontend.post,index', compact('allPost'));
     }
 }

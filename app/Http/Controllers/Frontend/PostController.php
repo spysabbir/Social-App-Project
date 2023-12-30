@@ -18,8 +18,8 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'content' => 'required',
-            'image_path' => 'required|image|mimes:png,jpg,jpeg,webp',
+            'post_content' => 'required',
+            'post_photo' => 'nullable|image|mimes:png,jpg,jpeg',
         ]);
 
         if($validator->fails()){
@@ -28,14 +28,18 @@ class PostController extends Controller
                 'error'=> $validator->errors()->toArray()
             ]);
         }else{
-            $post_photo_name = "Post-Photo-".Str::random(10).".". $request->file('image_path')->getClientOriginalExtension();
-            $upload_link = base_path("public/uploads/post_photo/").$post_photo_name;
-            Image::make($request->file('image_path'))->resize(120, 120)->save($upload_link);
+            if($request->hasFile('post_photo')){
+                $post_photo_name = "Post-Photo-".Str::random(10).".". $request->file('post_photo')->getClientOriginalExtension();
+                $upload_link = base_path("public/uploads/post_photo/").$post_photo_name;
+                Image::make($request->file('post_photo'))->resize(120, 120)->save($upload_link);
+            }else{
+                $post_photo_name = null;
+            }
 
             Post::insert([
                 'user_id' => Auth::user()->id,
-                'content' => $request->content,
-                'image_path' => $post_photo_name,
+                'post_content' => $request->post_content,
+                'post_photo' => $post_photo_name,
                 'created_at' =>Carbon::now(),
             ]);
 
@@ -57,8 +61,8 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'content' => 'required',
-            'image_path' => 'nullable|image|mimes:png,jpg,jpeg,webp',
+            'post_content' => 'required',
+            'post_photo' => 'nullable|image|mimes:png,jpg,jpeg',
         ]);
 
         if($validator->fails()){
@@ -68,16 +72,16 @@ class PostController extends Controller
             ]);
         }else{
             $post->update([
-                'content' => $request->content,
+                'post_content' => $request->post_content,
             ]);
 
-            if($request->hasFile('image_path')){
-                unlink(base_path("public/uploads/post_photo/").$post->image_path);
-                $post_photo_name = "Post-Photo-".Str::random(10).".". $request->file('image_path')->getClientOriginalExtension();
+            if($request->hasFile('post_photo')){
+                unlink(base_path("public/uploads/post_photo/").$post->post_photo);
+                $post_photo_name = "Post-Photo-".Str::random(10).".". $request->file('post_photo')->getClientOriginalExtension();
                 $upload_link = base_path("public/uploads/post_photo/").$post_photo_name;
-                Image::make($request->file('image_path'))->resize(120, 120)->save($upload_link);
+                Image::make($request->file('post_photo'))->resize(120, 120)->save($upload_link);
                 $post->update([
-                    'image_path' => $post_photo_name,
+                    'post_photo' => $post_photo_name,
                 ]);
             }
 
@@ -91,7 +95,7 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         $post = Post::findOrFail($id);
-        unlink(base_path("public/uploads/post_photo/").$post->image_path);
+        unlink(base_path("public/uploads/post_photo/").$post->post_photo);
         $post->delete();
     }
 
@@ -113,7 +117,7 @@ class PostController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'post_id' => 'required',
-            'content' => 'required',
+            'comment_content' => 'required',
         ]);
 
         if($validator->fails()){
@@ -125,7 +129,7 @@ class PostController extends Controller
             Comment::create([
                 'user_id' => Auth::user()->id,
                 'post_id' => $request->post_id,
-                'content' => $request->content,
+                'comment_content' => $request->comment_content,
                 'created_at' =>Carbon::now(),
             ]);
             return response()->json([
@@ -143,12 +147,12 @@ class PostController extends Controller
     public function postLikeList($id)
     {
         $allLike = Like::where('post_id', $id)->get();
-        return view('frontend.layouts.like-list', compact('allLike'));
+        return view('frontend.post.like-list', compact('allLike'));
     }
 
     public function postCommentList($id)
     {
         $allComment = Comment::where('post_id', $id)->get();
-        return view('frontend.layouts.comment-list', compact('allComment'));
+        return view('frontend.post.comment-list', compact('allComment'));
     }
 }

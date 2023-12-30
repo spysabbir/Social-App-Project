@@ -33,7 +33,7 @@
                             <div class="me-2 bg-white shadow-sm rounded-4 p-3 user-list-item d-flex justify-content-center my-2">
                                 <div class="text-center">
                                     <div class="position-relative d-flex justify-content-center">
-                                        <a href="{{ route('timeline', $user->id) }}" class="text-decoration-none">
+                                        <a href="{{ route('timeline', $user->username) }}" class="text-decoration-none">
                                             <img src="{{ asset('uploads/profile_photo') }}/{{ $user->profile_photo }}" class="img-fluid rounded-circle mb-3" alt="profile-img">
                                             <div class="position-absolute">
                                                 <span class="material-icons bg-primary small p-1 fw-bold text-white rounded-circle">done</span>
@@ -60,7 +60,7 @@
 
                     <!-- Post Start -->
                     <div class="pt-4 feeds" id="indexPagePostList">
-                        @include('frontend.layouts.post')
+                        @include('frontend.post.index')
                     </div>
                     <!-- Post End -->
 
@@ -73,7 +73,7 @@
                 <h6 class="mb-3 fw-bold text-body">People you can follow</h6>
                 <div class="bg-white rounded-4 overflow-hidden mb-4 shadow-sm">
                     @forelse ($allUser as $user)
-                    <a href="{{ route('timeline', $user->id) }}" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
+                    <a href="{{ route('timeline', $user->username) }}" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
                         <img src="{{ asset('uploads/profile_photo') }}/{{ $user->profile_photo }}" class="img-fluid rounded-circle me-3" alt="profile-img">
                         <div>
                             <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{ $user->name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>

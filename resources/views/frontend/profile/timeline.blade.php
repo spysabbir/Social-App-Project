@@ -50,7 +50,7 @@
           <div class="tab-pane fade show active" id="pills-feed" role="tabpanel" aria-labelledby="pills-feed-tab">
              <div class="ms-1">
                 <div class="feeds" id="timelinePagePostList">
-                    @include('frontend.layouts.post')
+                    @include('frontend.post.index')
                 </div>
              </div>
             </div>

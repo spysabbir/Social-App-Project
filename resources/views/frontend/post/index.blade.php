@@ -5,25 +5,29 @@
         <div class="d-flex ms-3 align-items-start w-100">
             <div class="w-100">
             <div class="d-flex align-items-center justify-content-between">
-                <a href="{{ route('timeline', $post->user->id) }}" class="text-decoration-none d-flex align-items-center">
+                <a href="{{ route('timeline', $post->user->username) }}" class="text-decoration-none d-flex align-items-center">
                     <h6 class="fw-bold mb-0 text-body">{{ $post->user->name }}</h6>
                     <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span>
                     <small class="text-muted ms-2">{{ $post->user->username }}</small>
                 </a>
                 <div class="d-flex align-items-center small">
                     <p class="text-muted mb-0">{{ $post->created_at->format('D d-M,Y h:i:s A') }}</p>
-                    <div class="dropdown">
-                        <a href="javascript:;" class="text-muted text-decoration-none material-icons ms-2 md-20 rounded-circle bg-light p-1" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">more_vert</a>
-                        <ul class="dropdown-menu fs-13 dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                            <li data-id="{{ $post->id }}" class="editBtn"><a class="dropdown-item text-muted" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#editPostModal"><span class="material-icons md-13 me-1">edit</span>Edit</a></li>
-                            <li data-id="{{ $post->id }}" class="deleteBtn"><a class="dropdown-item text-muted" href="javascript:void(0)"><span class="material-icons md-13 me-1">delete</span>Delete</a></li>
-                        </ul>
-                    </div>
+                    @if (Auth::user()->id == $post->user->id)
+                        <div class="dropdown">
+                            <a href="javascript:;" class="text-muted text-decoration-none material-icons ms-2 md-20 rounded-circle bg-light p-1" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">more_vert</a>
+                            <ul class="dropdown-menu fs-13 dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                                <li data-id="{{ $post->id }}" class="editBtn"><a class="dropdown-item text-muted" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#editPostModal"><span class="material-icons md-13 me-1">edit</span>Edit</a></li>
+                                <li data-id="{{ $post->id }}" class="deleteBtn"><a class="dropdown-item text-muted" href="javascript:void(0)"><span class="material-icons md-13 me-1">delete</span>Delete</a></li>
+                            </ul>
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class="my-2">
-                <p class="text-dark">{{ $post->content }}</p>
-                <img src="{{ asset('uploads/post_photo') }}/{{ $post->image_path }}" class="img-fluid rounded mb-3" alt="post-img">
+                <p class="text-dark">{{ $post->post_content }}</p>
+                @if ($post->post_photo)
+                <img src="{{ asset('uploads/post_photo') }}/{{ $post->post_photo }}" class="img-fluid rounded mb-3" alt="post-img">
+                @endif
                 <hr>
                 <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="postLikeBox d-flex">
@@ -48,7 +52,7 @@
                         <input type="hidden" class="comment_post_id" value="{{ $post->id }}">
                        <div class="d-flex align-items-center">
                             <div class="border rounded-4">
-                                <textarea class="form-control rounded-3 fw-light border-0" name="content" placeholder="Write Your comment"></textarea>
+                                <textarea class="form-control rounded-3 fw-light border-0" name="comment_content" placeholder="Write Your comment"></textarea>
                             </div>
                             <button type="button" class="btn btn-info border-0 commentBtn ps-2 text-decoration-none">Comment</button>
                        </div>
@@ -58,14 +62,14 @@
                 <div class="comments">
                     @forelse (App\Models\Comment::where('post_id', $post->id)->latest()->take(3)->get() as $comment)
                     <div class="d-flex mb-2">
-                        <a href="{{ route('timeline', $post->user->id) }}" class="text-dark text-decoration-none">
+                        <a href="{{ route('timeline', $post->user->username) }}" class="text-dark text-decoration-none">
                             <img src="{{ asset('uploads/profile_photo') }}/{{ $comment->user->profile_photo }}" class="img-fluid rounded-circle user-img mb-3" alt="profile-img">
                         </a>
                         <div class="ms-2 small">
-                            <a href="{{ route('timeline', $post->user->id) }}" class="text-dark text-decoration-none">
+                            <a href="{{ route('timeline', $post->user->username) }}" class="text-dark text-decoration-none">
                                 <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
                                     <p class="fw-500 mb-0">{{ $comment->user->name }}</p>
-                                    <span class="text-muted">{{ $comment->content }}</span>
+                                    <span class="text-muted">{{ $comment->comment_content }}</span>
                                 </div>
                             </a>
                             <div class="ms-2">

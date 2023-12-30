@@ -33,7 +33,7 @@ class ProfileController extends Controller
     {
         $allPost = Post::where('user_id', auth()->user()->id)->get();
 
-        return view('frontend.layouts.post', compact('allPost'));
+        return view('frontend.post.index', compact('allPost'));
     }
 
     public function update(Request $request)

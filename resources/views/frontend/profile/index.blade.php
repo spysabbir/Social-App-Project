@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="p-3">
-                <p class="mb-2 fs-6">The standard chunk of Lorem Ipsum used since is reproduced. Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature..</p>
+                {{-- <p class="mb-2 fs-6">The standard chunk of Lorem Ipsum used since is reproduced. Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature..</p> --}}
                 <span class="material-icons text-muted md-16 m-3">calendar_today</span><strong class="badge bg-info">Joined on {{ $user->created_at->format('D d,M-Y') }}</strong>
                 <div class="d-flex followers">
                     <div>
@@ -44,7 +44,7 @@
           <div class="tab-pane fade show active" id="pills-feed" role="tabpanel" aria-labelledby="pills-feed-tab">
              <div class="ms-1">
                 <div class="feeds" id="profilePagePostList">
-                    @include('frontend.layouts.post')
+                    @include('frontend.post.index')
                 </div>
              </div>
             </div>
