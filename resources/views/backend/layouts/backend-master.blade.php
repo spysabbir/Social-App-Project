@@ -13,9 +13,6 @@
 	<link href="{{ asset('backend') }}/plugins/highcharts/css/highcharts.css" rel="stylesheet" />
 	<link href="{{ asset('backend') }}/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
 	<link href="{{ asset('backend') }}/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
-	<link href="{{ asset('backend') }}/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-
-
 	<!-- loader-->
 	<link href="{{ asset('backend') }}/css/pace.min.css" rel="stylesheet" />
 	<script src="{{ asset('backend') }}/js/pace.min.js"></script>
@@ -30,9 +27,10 @@
 	<link rel="stylesheet" href="{{ asset('backend') }}/css/semi-dark.css" />
 	<link rel="stylesheet" href="{{ asset('backend') }}/css/header-colors.css" />
 
+    <link href="{{ asset('backend') }}/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     <link href="{{ asset('backend') }}/plugins/toastr/toastr.css" rel="stylesheet">
     <link href="{{ asset('backend') }}/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet">
-	<title>{{ config('app.name', 'Laravel') }} | @yield('title')</title>
+	<title>{{ env('APP_NAME') }} | @yield('title')</title>
 </head>
 
 <body>
@@ -45,13 +43,13 @@
 					<img src="{{ asset('backend') }}/images/logo-icon.png" class="logo-icon" alt="logo icon">
 				</div>
 				<div>
-					<h4 class="logo-text">{{ config('app.name', 'Laravel') }}</h4>
+					<h4 class="logo-text">{{ env('APP_NAME') }}</h4>
 				</div>
 				<div class="toggle-icon ms-auto"><i class='bx bx-first-page'></i>
 				</div>
 			</div>
 			<!--navigation-->
-			@include('backend.layouts.navigation')
+            @include('backend.layouts.navigation')
 			<!--end navigation-->
 		</div>
 		<!--end sidebar wrapper -->
@@ -260,15 +258,14 @@
 	<script src="{{ asset('backend') }}/plugins/highcharts/js/variable-pie.js"></script>
 	<script src="{{ asset('backend') }}/plugins/highcharts/js/export-data.js"></script>
 	<script src="{{ asset('backend') }}/plugins/highcharts/js/accessibility.js"></script>
-	<script src="{{ asset('backend') }}/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
-	<script src="{{ asset('backend') }}/plugins/datatable/js/jquery.dataTables.min.js"></script>
+
+    <script src="{{ asset('backend') }}/plugins/datatable/js/jquery.dataTables.min.js"></script>
 	<script src="{{ asset('backend') }}/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
     <script src="{{ asset('backend') }}/plugins/sweetalert2/sweetalert2.all.min.js"></script>
     <script src="{{ asset('backend') }}/plugins/toastr/toastr.min.js"></script>
+	<!--app JS-->
+	<script src="{{ asset('backend') }}/js/app.js"></script>
 
-    <script>
-		new PerfectScrollbar('.dashboard-top-countries');
-	</script>
     <script>
         $(document).ready(function() {
             @if(Session::has('message'))
@@ -293,11 +290,9 @@
             @endif
         });
     </script>
-	<script src="{{ asset('backend') }}/js/index.js"></script>
-	<!--app JS-->
-	<script src="{{ asset('backend') }}/js/app.js"></script>
 
     @yield('script')
+
 </body>
 
 </html>
