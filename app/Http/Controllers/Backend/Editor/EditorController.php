@@ -48,13 +48,14 @@ class EditorController extends Controller
             ->addColumn('action', function ($row) {
                 $btn = '
                     <button type="button" data-id="'.$row->id.'" class="btn btn-success btn-sm viewBtn" data-bs-toggle="modal" data-bs-target="#viewModal">View</button>
+                    <a href="'.route('backend.user.activity', $row->id).'" class="btn btn-info btn-sm" >Activity</a>
                 ';
                 return $btn;
             })
             ->rawColumns(['status', 'last_active', 'action'])
             ->make(true);
         }
-        return view('backend.editor.all-user.index');
+        return view('backend.editor.user.index');
     }
 
     public function userStatus($id)
@@ -74,7 +75,16 @@ class EditorController extends Controller
         $followerCount = Follower::where('follower_id', $id)->count();
         $followingCount = Follower::where('following_id', $id)->count();
         $postCount = Post::where('user_id', $id)->count();
-        return view('backend.editor.all-user.view', compact('user', 'followerCount', 'followingCount', 'postCount'));
+        return view('backend.editor.user.view', compact('user', 'followerCount', 'followingCount', 'postCount'));
+    }
+
+    public function userActivity($id)
+    {
+        $user = User::where('id', $id)->first();
+        $followerDetails = Follower::where('follower_id', $id)->get();
+        $followingDetails = Follower::where('following_id', $id)->get();
+        $postDetails = Post::where('user_id', $id)->get();
+        return view('backend.editor.user.activity', compact('user', 'followerDetails', 'followingDetails', 'postDetails'));
     }
 
     public function allPost(Request $request)
@@ -120,7 +130,7 @@ class EditorController extends Controller
             ->rawColumns(['status', 'created_at', 'action'])
             ->make(true);
         }
-        return view('backend.editor.all-post.index');
+        return view('backend.editor.post.index');
     }
 
     public function postStatus($id)
@@ -137,6 +147,6 @@ class EditorController extends Controller
     public function postView($id)
     {
         $post = Post::where('id', $id)->first();
-        return view('backend.editor.all-post.view', compact('post'));
+        return view('backend.editor.post.view', compact('post'));
     }
 }

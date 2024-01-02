@@ -61,7 +61,7 @@ class SuperAdminController extends Controller
             ->rawColumns(['status', 'role', 'action'])
             ->make(true);
         }
-        return view('backend.super-admin.all-staff.index');
+        return view('backend.super-admin.staff.index');
     }
 
     public function staffStatus($id)
@@ -78,6 +78,6 @@ class SuperAdminController extends Controller
     public function staffView($id)
     {
         $staff = Admin::where('id', $id)->first();
-        return view('backend.super-admin.all-staff.view', compact('staff'));
+        return view('backend.super-admin.staff.view', compact('staff'));
     }
 }

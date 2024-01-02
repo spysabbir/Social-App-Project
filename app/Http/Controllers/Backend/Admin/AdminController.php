@@ -46,7 +46,7 @@ class AdminController extends Controller
             ->rawColumns(['status', 'action'])
             ->make(true);
         }
-        return view('backend.admin.all-editor.index');
+        return view('backend.admin.editor.index');
     }
 
     public function editorStatus($id)
@@ -63,6 +63,6 @@ class AdminController extends Controller
     public function editorView($id)
     {
         $editor = Admin::where('id', $id)->first();
-        return view('backend.admin.all-editor.view', compact('editor'));
+        return view('backend.admin.editor.view', compact('editor'));
     }
 }

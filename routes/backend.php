@@ -53,6 +53,7 @@ Route::prefix('backend')->name('backend.')->group(function () {
             Route::get('/all/user', [EditorController::class, 'allUser'])->name('all.user');
             Route::get('/user/status/{id}', [EditorController::class, 'userStatus'])->name('user.status');
             Route::get('/user/view/{id}', [EditorController::class, 'userView'])->name('user.view');
+            Route::get('/user/activity/{id}', [EditorController::class, 'userActivity'])->name('user.activity');
 
             Route::get('/all/post', [EditorController::class, 'allPost'])->name('all.post');
             Route::get('/post/status/{id}', [EditorController::class, 'postStatus'])->name('post.status');

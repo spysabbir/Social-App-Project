@@ -106,7 +106,6 @@
             });
         });
 
-
         // View Data
         $(document).on('click', '.viewBtn', function () {
             var id = $(this).data('id');
