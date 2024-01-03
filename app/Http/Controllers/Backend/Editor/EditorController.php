@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Backend\Editor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use App\Models\Follower;
+use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -147,6 +149,8 @@ class EditorController extends Controller
     public function postView($id)
     {
         $post = Post::where('id', $id)->first();
-        return view('backend.editor.post.view', compact('post'));
+        $allLike = Like::where('post_id', $post->id)->get();
+        $allComment = Comment::where('post_id', $post->id)->get();
+        return view('backend.editor.post.view', compact('post', 'allLike', 'allComment'));
     }
 }

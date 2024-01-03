@@ -8,11 +8,11 @@
     </li>
     <li class="menu-label">Super Admin Panel</li>
     <li>
-        <a href="{{ route('backend.all.staff') }}">
+        <a href="{{ route('backend.all.admin') }}">
             <div class="parent-icon">
                 <i class='bx bx-user'></i>
             </div>
-            <div class="menu-title">All Staff</div>
+            <div class="menu-title">All Admin</div>
         </a>
     </li>
     <li class="menu-label">Admin Panel</li>

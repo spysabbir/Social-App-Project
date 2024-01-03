@@ -9,11 +9,11 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SuperAdminController extends Controller
 {
-    public function allStaff(Request $request)
+    public function allAdmin(Request $request)
     {
         if($request->ajax()){
-            $all_staff = "";
-            $query = Admin::where('role', '!=', 'Super Admin')->select('admins.*');
+            $all_admin = "";
+            $query = Admin::where('role', 'Admin')->select('admins.*');
 
             if($request->role){
                 $query->where('admins.role', $request->role);
@@ -22,9 +22,9 @@ class SuperAdminController extends Controller
                 $query->where('admins.status', $request->status);
             }
 
-            $all_staff = $query->get();
+            $all_admin = $query->get();
 
-            return DataTables::of($all_staff)
+            return DataTables::of($all_admin)
             ->addIndexColumn()
             ->editColumn('status', function($row){
                 if($row->status == 'Active'){
@@ -61,23 +61,23 @@ class SuperAdminController extends Controller
             ->rawColumns(['status', 'role', 'action'])
             ->make(true);
         }
-        return view('backend.super-admin.staff.index');
+        return view('backend.super-admin.admin.index');
     }
 
-    public function staffStatus($id)
+    public function adminStatus($id)
     {
-        $staff = Admin::findOrFail($id);
-        if($staff->status == "Active"){
-            $staff->status = "Inactive";
+        $admin = Admin::findOrFail($id);
+        if($admin->status == "Active"){
+            $admin->status = "Inactive";
         }else{
-            $staff->status = "Active";
+            $admin->status = "Active";
         }
-        $staff->save();
+        $admin->save();
     }
 
-    public function staffView($id)
+    public function adminView($id)
     {
-        $staff = Admin::where('id', $id)->first();
-        return view('backend.super-admin.staff.view', compact('staff'));
+        $admin = Admin::where('id', $id)->first();
+        return view('backend.super-admin.admin.view', compact('admin'));
     }
 }

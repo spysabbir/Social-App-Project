@@ -38,9 +38,9 @@ Route::prefix('backend')->name('backend.')->group(function () {
         Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
         Route::middleware(['role:Super Admin'])->group(function(){
-            Route::get('/all/staff', [SuperAdminController::class, 'allStaff'])->name('all.staff');
-            Route::get('/staff/status/{id}', [SuperAdminController::class, 'staffStatus'])->name('staff.status');
-            Route::get('/staff/view/{id}', [SuperAdminController::class, 'staffView'])->name('staff.view');
+            Route::get('/all/admin', [SuperAdminController::class, 'allAdmin'])->name('all.admin');
+            Route::get('/admin/status/{id}', [SuperAdminController::class, 'adminStatus'])->name('admin.status');
+            Route::get('/admin/view/{id}', [SuperAdminController::class, 'adminView'])->name('admin.view');
         });
 
         // Route::middleware(['role:Admin'])->group(function(){

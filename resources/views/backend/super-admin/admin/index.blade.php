@@ -1,20 +1,20 @@
 @extends('backend.layouts.backend-master')
 
-@section('title', 'All Staff')
+@section('title', 'All Admin')
 
 @section('content')
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header d-flex justify-content-between">
-                <h4 class="card-title">Staff Panel</h4>
+                <h4 class="card-title">Admin Panel</h4>
                 <!-- View Modal -->
-                <button type="button" class="btn btn-success btn-sm viewBtn" data-bs-toggle="modal" data-bs-target="#addModal">Create Staff</button>
+                <button type="button" class="btn btn-success btn-sm viewBtn" data-bs-toggle="modal" data-bs-target="#addModal">Create Admin</button>
                 <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Create Staff</h5>
+                                <h5 class="modal-title">Create Admin</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -48,7 +48,7 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="d-grid">
-                                                <button type="submit" class="btn btn-primary"><i class='bx bx-user'></i>Create Staff</button>
+                                                <button type="submit" class="btn btn-primary"><i class='bx bx-user'></i>Create Admin</button>
                                             </div>
                                         </div>
                                     </form>
@@ -163,7 +163,7 @@
             serverSide: true,
             searching: true,
             ajax: {
-                url: "{{ route('backend.all.staff') }}",
+                url: "{{ route('backend.all.admin') }}",
                 "data":function(e){
                     e.status = $('#filter-status').val();
                     e.role = $('#filter-role').val();
@@ -188,7 +188,7 @@
         // Change Status Data
         $(document).on('click', '.statusBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('backend.staff.status', ":id") }}";
+            var url = "{{ route('backend.admin.status', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
@@ -203,7 +203,7 @@
         // View Data
         $(document).on('click', '.viewBtn', function () {
             var id = $(this).data('id');
-            var url = "{{ route('backend.staff.view', ":id") }}";
+            var url = "{{ route('backend.admin.view', ":id") }}";
             url = url.replace(':id', id)
             $.ajax({
                 url: url,
